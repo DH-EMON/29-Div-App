@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no" data-theme="light">
+<head>
+<meta charset="utf-8">
+<script src="gate.js"></script>
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>জেসিও মেস হিসাব</title>
+<meta name="theme-color" content="#0f5f73">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{color-scheme:light;--bg:#f5f6fa;--card:#fff;--tx:#1b1f2a;--mu:#6b7280;--bd:#c9ced9;--ac:#0f5f73;--ac2:#e1f0f3;--red:#c0201a;--bad:#b42318;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Bengali","Nirmala UI",Arial,sans-serif;padding:14px 10px 70px}
+h1{font-size:21px;margin:6px 4px 2px;text-align:center}
+.org{text-align:center;font-weight:700;font-size:16px;margin:0 0 10px}
+.back{display:inline-block;color:var(--ac);font-weight:700;text-decoration:none;padding:4px 6px;font-size:15px}
+.sub{color:var(--mu);font-size:12px;text-align:center;margin:0 0 10px}
+.foot{text-align:right;margin-right:-4px;color:var(--mu);font-size:13px;margin-top:20px;font-weight:600}
+.ctl{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:4px 0 6px;font-weight:700}
+.ctl select{font:inherit;font-size:17px;font-weight:700;color:var(--tx);background:var(--card);border:2px solid var(--ac);border-radius:10px;padding:7px 10px}
+.pgbar{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin:4px 0 4px;font-weight:700}
+.pgbar button{padding:8px 12px;font-size:14px}
+.pgbar button:disabled{opacity:.35}
+.pgbar select{font:inherit;font-weight:700;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 6px}
+td.cmt{min-width:180px;padding:3px 6px;text-align:left;font-size:13px}
+td.cmt input.gh{width:58px;border:1px solid var(--bd);border-radius:6px;text-align:center;color:var(--red);font-weight:800;font-size:15px;padding:6px 2px;background:var(--card)}
+td.cmt input.ct{width:100%;border:1px solid var(--bd);border-radius:8px;padding:7px 6px;background:var(--card);color:var(--tx);font-size:14px}
+.gt{font-weight:700;color:var(--bad);font-size:14px}
+.obv{font-weight:800;font-size:16px;color:var(--tx);padding:10px 2px;display:inline-block}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px}
+table{border-collapse:collapse;min-width:100%}
+th,td{border:1px solid var(--bd);padding:0;text-align:center;white-space:nowrap;vertical-align:middle}
+th{background:var(--ac2);font-size:13px;padding:8px 6px}
+td.l,th.l{position:sticky;left:0;z-index:2;background:var(--card)}
+th.l{background:var(--ac2);z-index:3}
+td.dt{padding:2px 3px;min-width:132px}
+td.dt select{font:inherit;font-size:14px;color:var(--tx);background:transparent;border:0;padding:6px 0;width:46px}
+td.dt span{font-size:13px;color:var(--mu)}
+td input,td select.sdesc{font:inherit}
+td input.n{width:64px;border:0;background:transparent;color:var(--red);font-size:15px;text-align:center;padding:12px 2px}
+td.v{color:var(--red);font-size:15px;font-weight:700;padding:0 8px;min-width:64px}
+td.ds{min-width:200px;padding:3px 4px;text-align:left}
+td.ds select{width:100%;font-size:14px;color:var(--tx);background:transparent;border:1px solid var(--bd);border-radius:8px;padding:6px 4px}
+td.ds input{width:100%;margin-top:3px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx);font-size:14px;padding:6px}
+td.ds .fx{font-weight:700;font-size:14px;padding:8px 4px;display:block}
+td.bl{min-width:130px;padding:2px 6px}
+.am{display:flex;align-items:center;justify-content:center;gap:2px;color:var(--red);font-size:13px}
+.am input{width:84px;border:0;background:transparent;color:var(--red);font-size:14px;text-align:center;padding:4px 2px}
+.am .sg{font-weight:800}
+.bv{font-weight:800;font-size:16px;color:var(--tx);border-top:1px solid var(--tx);margin:0 6px;padding:2px 0 3px;min-height:22px}
+.bv.neg{color:var(--bad)}
+.ob{width:100px;border:0;background:transparent;color:var(--red);font-size:16px;font-weight:800;text-align:center;padding:10px 2px}
+input:focus,select:focus{outline:2px solid var(--ac);background:var(--ac2)}
+td.x{padding:0 2px}
+td.x button{border:0;background:none;color:var(--bad);font-size:20px;padding:4px 8px;line-height:1}
+tr.op td{background:var(--ac2)}
+tr.op td.l{background:var(--ac2)}
+.btns{display:flex;gap:8px;margin-top:12px}
+button{font:inherit;border-radius:10px;padding:12px;cursor:pointer}
+.p{flex:1;background:var(--ac);color:#fff;border:0;font-weight:600}
+.s{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.note{color:var(--mu);font-size:12px;margin-top:12px}
+.fs{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.fs.on{display:flex}
+.fs .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-weight:700}
+.fs .bar button{padding:8px 16px}
+.fs .body{flex:1;overflow:auto;background:#fff}
+.fs img{display:block;width:100%;min-width:1000px}
+
+.xcard{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:8px 0 12px}
+.xcard h2{font-size:16px;margin:0 0 8px}
+.xr{display:flex;gap:6px;align-items:center;margin:6px 0}
+.xr select{flex:1.3;min-width:0;font:inherit;font-size:15px;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 4px}
+.xr input{flex:1;min-width:0;font:inherit;font-size:15px;color:var(--red);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px;text-align:center}
+.xr .av{flex:1.1;text-align:center;font-weight:700;font-size:14px;color:var(--tx)}
+.xr button.q{border:0;background:none;color:var(--bad);font-size:20px;padding:2px 6px}
+.xtop{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
+.xtop input{width:110px;font:inherit;font-size:17px;font-weight:700;color:var(--red);border:2px solid var(--ac);border-radius:10px;padding:6px;text-align:center;background:var(--card)}
+.xh{display:flex;gap:6px;font-size:12px;color:var(--mu);font-weight:700;margin-top:4px}
+.xh span{flex:1;text-align:center}
+.xh span:first-child{flex:1.3}
+.xh span:last-child{flex:1.1}
+.lnk{background:none;border:0;color:var(--ac);font-weight:700;font-size:13px;padding:6px 2px;text-decoration:underline}
+#base{display:none;margin-top:8px}
+#base .xr span{flex:1.3;font-weight:700}
+.c1,.c2,.c3{position:sticky;z-index:2;background:var(--card)}
+th.c1,th.c2,th.c3{background:var(--ac2);z-index:3}
+.c1{left:0;min-width:104px;max-width:104px}
+.c2{left:104px;min-width:76px;max-width:76px}
+.c3{left:180px;min-width:70px;max-width:70px;font-weight:700;font-size:14px}
+td.c1{padding:3px 2px;vertical-align:top}
+td.c1 select{font:inherit;font-size:13px;color:var(--tx);background:transparent;border:0;padding:5px 0;width:44px}
+td.c1 span{font-size:12px;color:var(--mu)}
+td.c2{vertical-align:top;padding:2px}
+td.c2 input{width:68px;border:0;border-bottom:1px solid var(--bd);background:transparent;color:var(--red);font:inherit;font-size:15px;font-weight:700;text-align:center;padding:8px 0}
+td.rd{color:var(--red)}
+tr.rg td,tr.rf td{background:var(--ac2)}
+tr.rg td.c1,tr.rg td.c2,tr.rg td.c3,tr.rf td.c1,tr.rf td.c2,tr.rf td.c3{background:var(--ac2)}
+td.v{min-width:88px;font-size:14px;font-weight:700;padding:7px 4px;color:var(--tx)}
+td.v.rd{color:var(--red)}
+td.v.neg{color:var(--bad)}
+tr.blk td{border-top:1px solid var(--bd)}
+tr.top td{border-top:2px solid var(--tx)}
+th.it{min-width:96px;padding:6px 4px}
+th.it select{font:inherit;font-size:14px;font-weight:700;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:6px 2px;width:88px}
+th.it .dl{display:block;margin:4px auto 0;border:0;background:none;color:var(--bad);font-size:12px}
+
+.pgbar{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin:4px 0 8px;font-weight:700}
+.pgbar button{padding:8px 12px;font-size:14px}
+.pgbar button:disabled{opacity:.35}
+.pgbar select{font:inherit;font-weight:700;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 6px}
+td.dtx{font-size:12px;font-weight:600;padding:4px 2px;vertical-align:top}
+td.sv{font-size:13px;font-weight:700;padding:6px 3px;vertical-align:top}
+td.sc{vertical-align:top;padding:3px 2px}
+td.sc select{font:inherit;font-size:13px;color:var(--tx);background:transparent;border:0;padding:5px 0;width:44px}
+td.sc span{font-size:12px;color:var(--mu)}
+tr.tot td{background:var(--ac2);font-weight:800}
+tr.tot td.c3{background:var(--ac2)}
+.hint{color:var(--mu);font-size:12px;text-align:center;margin:0 0 8px}
+.fs .body img{margin-bottom:6px;border-bottom:4px solid var(--bg)}
+
+td.sn,th.sn{position:sticky;left:0;z-index:2;background:var(--card);min-width:48px;max-width:48px;font-size:13px;font-weight:700;padding:8px 2px}
+th.sn{background:var(--ac2);z-index:3}
+td.dtl,th.dtl{position:sticky;left:48px;z-index:2;background:var(--card);min-width:92px;max-width:92px;font-size:13px;font-weight:600;padding:8px 2px}
+th.dtl{background:var(--ac2);z-index:3}
+td.jc{min-width:84px;padding:2px}
+td.jc input{width:76px;border:0;border-bottom:1px solid var(--bd);background:transparent;color:var(--red);font:inherit;font-size:15px;font-weight:800;text-align:center;padding:8px 0}
+td.iv{min-width:92px;font-size:14px;font-weight:600;padding:8px 4px;color:var(--tx)}
+tr.tt td{background:var(--ac2);font-weight:800;border-top:2px solid var(--tx)}
+tr.tt td.sn,tr.tt td.dtl{background:var(--ac2)}
+.stc{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin:6px 0 10px}
+.stc .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-weight:700;font-size:14px;margin:4px 0}
+.stc input{width:70px;font:inherit;font-size:16px;font-weight:800;color:var(--red);border:2px solid var(--ac);border-radius:10px;padding:6px;text-align:center;background:var(--card)}
+.stc select{font:inherit;font-size:15px;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 4px}
+.fs .body img{margin-bottom:6px}
+
+.c1,.c2,.c3{position:sticky;z-index:2;background:var(--card)}
+th.c1,th.c2,th.c3{background:var(--ac2);z-index:3}
+.c1{left:0;min-width:42px;max-width:42px;font-size:13px;font-weight:700;padding:8px 2px}
+.c2{left:42px;min-width:64px;max-width:64px;padding:2px}
+.c3{left:106px;min-width:124px;max-width:124px;padding:2px}
+td.c2 input,td.c3 input{width:100%;border:0;background:transparent;color:var(--tx);font:inherit;font-size:14px;font-weight:700;padding:9px 3px}
+td.da{min-width:52px;padding:0}
+td.da input{width:52px;border:0;background:transparent;color:var(--red);font:inherit;font-size:14px;text-align:center;padding:10px 0}
+td.rt{min-width:92px;font-size:15px;font-weight:800;color:var(--red);padding:8px 6px;background:var(--ac2)}
+th.dh{min-width:52px;font-size:13px;padding:8px 2px}
+tr.tt td{background:var(--ac2);font-weight:800;border-top:2px solid var(--tx);font-size:15px}
+tr.tt td.c1{background:var(--ac2)}
+.mealb{display:flex;justify-content:center;margin:2px 0 8px}
+.mealb select{font:inherit;font-size:17px;font-weight:700;color:var(--tx);background:var(--card);border:2px solid var(--ac);border-radius:10px;padding:8px 12px}
+</style>
+</head>
+<body>
+<a class="back" href="jco-menu.html">← মেনু</a>
+<div class="ctl"><select id="mo" aria-label="মাস"></select><select id="yr" aria-label="সাল"></select></div>
+<h1 id="h1"></h1>
+<div class="org">২৯ ডিভ লোকেটিং</div>
+<div class="mealb"><select id="meal" aria-label="খাবারের ধরন"></select></div>
+<div class="sub">ডানে-বামে সরিয়ে দেখুন · প্রতিদিনের টাকা লাল ঘরে লিখুন · টাকার পরিমাণ আর মোট টাকা নিজে হিসাব হয়</div>
+<div class="wrap"><table id="tb"></table></div>
+<div class="btns"><button class="p" id="add">+ সারি যোগ</button><button class="s" id="pvb">প্রিভিউ</button><button class="s" id="pdf">PDF</button><button class="s" id="rst">রিসেট</button></div>
+<div class="note">ডাটা শুধু এই ফোনের ব্রাউজারে সেভ হয়। ক্রম, পদবী আর নাম তিনটা খাবারেই একই থাকে। টাকার পরিমাণ = ঐ মাসের সব দিনের টাকার যোগ। মোট টাকা = সবার টাকার পরিমাণের যোগ। রিসেট শুধু এই খাবারের টাকাগুলো মুছে।</div>
+<div class="foot">Create By Ocu Emon</div>
+<div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
+<script>
+var PAL=[["#0f5f73","#e1f0f3"],["#305496","#e8eefb"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
+var PL="#e1f0f3",AC="#0f5f73";
+try{var th=+localStorage.getItem("jco-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1];AC=PAL[th][0]}}catch(x){}
+
+
+
+
+
+var BD="০১২৩৪৫৬৭৮৯";
+function toBn(s){return String(s).replace(/[0-9]/g,function(d){return BD.charAt(+d)})}
+function toEn(s){return String(s).replace(/[০-৯]/g,function(d){return BD.indexOf(d)})}
+function num(v){var n=parseFloat(toEn(v));return isNaN(n)?0:n}
+function r2(x){return Math.round(x*100)/100}
+function fm(x){return toBn(String(r2(x)))}
+var MN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+var MEALS=[["morning","সকাল/ট্রি ব্রেক"],["noon","দুপুরের খাবার"],["night","রাত/ট্রি ব্রেক"]];
+var PEOPLE0=[["SWO","আজিজুল"],["SWO","শামসুল"],["WO","আবুল"],["WO","সাইফুল"],["WO","জুলহাস"],["WO","নারায়ণ"],["WO","আজিজ"],["WO","রহিম"],["WO","জিয়া"]];
+function blankDays(){var a=[];for(var i=0;i<31;i++)a.push(null);return a}
+function fresh(){var d=new Date(),o={type:"morning",y:String(d.getFullYear()),m:String(d.getMonth()+1),people:[],amt:{}};
+PEOPLE0.forEach(function(x){o.people.push({p:x[0],n:x[1]})});
+MEALS.forEach(function(m){o.amt[m[0]]=o.people.map(blankDays)});return o}
+var KEY="jco-mess1",S=null;
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(x){}
+if(!S||!S.people||!S.amt||!MEALS.every(function(m){return Array.isArray(S.amt[m[0]])}))S=fresh();
+if(S.people.length>=PEOPLE0.length&&S.people.every(function(q){return!q.p&&!q.n}))PEOPLE0.forEach(function(x,i){S.people[i].p=x[0];S.people[i].n=x[1]});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+function dim(){return new Date(+S.y,+S.m,0).getDate()}
+function mname(){for(var i=0;i<MEALS.length;i++)if(MEALS[i][0]===S.type)return MEALS[i][1];return ""}
+function ttl(){return "জেসিও মেস হিসাব - "+MN[+S.m-1]+" "+toBn(S.y)}
+function A(){return S.amt[S.type]}
+var Tb=document.getElementById("tb"),moS=document.getElementById("mo"),yrS=document.getElementById("yr"),mealS=document.getElementById("meal");
+function head(){document.getElementById("h1").textContent=ttl()}
+function build(){
+var n=dim(),h='<tr><th class="c1">ক্রম</th><th class="c2">পদবী</th><th class="c3">নাম</th>';
+for(var d=1;d<=n;d++)h+='<th class="dh">'+toBn(d)+'</th>';
+h+='<th>টাকার<br>পরিমাণ</th><th></th></tr>';
+S.people.forEach(function(pe,i){
+h+='<tr><td class="c1">'+toBn(i+1)+'</td><td class="c2"><input class="pp" data-i="'+i+'" aria-label="পদবী"></td><td class="c3"><input class="pn" data-i="'+i+'" aria-label="নাম"></td>';
+for(var d2=0;d2<n;d2++)h+='<td class="da"><input class="a" type="text" inputmode="decimal" placeholder="-" data-i="'+i+'" data-d="'+d2+'"></td>';
+h+='<td class="rt" id="rt'+i+'"></td><td class="x"><button class="dl" data-i="'+i+'" aria-label="মুছুন">×</button></td></tr>'});
+h+='<tr class="tt"><td class="c1" colspan="3" style="text-align:right;padding-right:10px">মোট টাকা</td><td colspan="'+n+'"></td><td class="rt" id="gt" style="background:var(--ac2)"></td><td></td></tr>';
+Tb.innerHTML=h;
+Tb.querySelectorAll(".pp").forEach(function(e){var i=+e.dataset.i;e.value=S.people[i].p;e.oninput=function(){S.people[i].p=this.value;save()}});
+Tb.querySelectorAll(".pn").forEach(function(e){var i=+e.dataset.i;e.value=S.people[i].n;e.oninput=function(){S.people[i].n=this.value;save()}});
+var arr=A();
+Tb.querySelectorAll("input.a").forEach(function(e){var i=+e.dataset.i,d=+e.dataset.d,row=arr[i];e.value=row[d]==null?"":toBn(row[d]);
+e.oninput=function(){var q=toBn(this.value.replace(/[^0-9০-৯.]/g,""));if(q!==this.value)this.value=q;row[d]=q===""?null:num(q);calc();save()};
+e.onfocus=function(){var t=this;setTimeout(function(){try{if(document.activeElement===t)t.select()}catch(x){}},30)};
+e.onblur=function(){this.value=row[d]==null?"":toBn(row[d])}});
+Tb.querySelectorAll(".dl").forEach(function(b){b.onclick=function(){var i=+this.dataset.i;if(confirm("সারি "+toBn(i+1)+" মুছবেন? (তিন খাবার থেকেই সরবে)")){S.people.splice(i,1);MEALS.forEach(function(m){S.amt[m[0]].splice(i,1)});save();build()}}});
+calc()}
+function rowSum(row,n){var s=0;for(var d=0;d<n;d++)if(row[d]!=null)s+=row[d];return r2(s)}
+function calc(){var n=dim(),arr=A(),g=0,any=false;
+arr.forEach(function(row,i){var s=rowSum(row,n),has=row.slice(0,n).some(function(v){return v!=null});if(has)any=true;g+=s;var e=document.getElementById("rt"+i);if(e)e.textContent=has?fm(s):""});
+var ge=document.getElementById("gt");if(ge)ge.textContent=any?fm(g):""}
+(function(){var h="";MN.forEach(function(n,i){h+='<option value="'+(i+1)+'">'+n+'</option>'});moS.innerHTML=h;h="";for(var y=2020;y<=2045;y++)h+='<option value="'+y+'">'+toBn(y)+'</option>';yrS.innerHTML=h;h="";MEALS.forEach(function(m){h+='<option value="'+m[0]+'">'+m[1]+'</option>'});mealS.innerHTML=h})();
+function sync(){moS.value=S.m;yrS.value=S.y;mealS.value=S.type;head()}
+moS.onchange=function(){S.m=this.value;save();head();build()};
+yrS.onchange=function(){S.y=this.value;save();head();build()};
+mealS.onchange=function(){S.type=this.value;save();build()};
+document.getElementById("add").onclick=function(){S.people.push({p:"",n:""});MEALS.forEach(function(m){S.amt[m[0]].push(blankDays())});save();build();window.scrollTo(0,document.body.scrollHeight)};
+document.getElementById("rst").onclick=function(){if(confirm("\""+mname()+"\" এর সব টাকা মুছে ফাঁকা করবেন? (নাম, পদবী থাকবে)")){S.amt[S.type]=S.people.map(blankDays);save();build()}};
+function ctxPack(W,H){var sc=2,cv=document.createElement("canvas");cv.width=W*sc;cv.height=H*sc;var x=cv.getContext("2d");x.scale(sc,sc);x.fillStyle="#fff";x.fillRect(0,0,W,H);x.textBaseline="middle";
+var FF='"Noto Sans Bengali","Nirmala UI","Segoe UI",system-ui,Arial,sans-serif';
+function fit(t,mw,size,bold){var s=size;for(;;){x.font=(bold?"bold ":"")+s+"px "+FF;if(x.measureText(t).width<=mw||s<=8)break;s--}}
+function box(a,b,w,h,fill){if(fill){x.fillStyle=fill;x.fillRect(a,b,w,h)}x.strokeStyle="#777";x.lineWidth=1;x.strokeRect(a,b,w,h)}
+function txt(t,cx,cy,w,col,bold,sz,al){if(t==null||t==="")return;x.fillStyle=col;x.textAlign=al||"center";fit(t,w-8,sz||14,bold);x.fillText(t,al==="left"?cx+6:cx,cy)}
+return{cv:cv,x:x,FF:FF,fit:fit,box:box,txt:txt}}
+function drawMeal(mt){var n=dim(),arr=S.amt[mt],mn=MEALS.filter(function(m){return m[0]===mt})[0][1],pad=16,c=[40,62,150],dw=44,tw=84,rh=30,hh=40,W=pad*2+c[0]+c[1]+c[2]+n*dw+tw,rows=S.people.length;
+var H=pad*2+112+hh+(rows+1)*rh+36,C=ctxPack(W,H),x=C.x,box=C.box,txt=C.txt,fit=C.fit,FF=C.FF,RED="#c0201a",BLK="#111";
+x.textAlign="center";x.fillStyle=BLK;fit(ttl(),W-2*pad,22,true);x.fillText(ttl(),W/2,pad+18);
+x.font="bold 17px "+FF;x.fillText("২৯ ডিভ লোকেটিং",W/2,pad+48);x.fillText(mn,W/2,pad+78);
+var y=pad+106,xs=[pad,pad+c[0],pad+c[0]+c[1]],xd=pad+c[0]+c[1]+c[2];
+["ক্রম","পদবী","নাম"].forEach(function(t,i){box(xs[i],y,c[i],hh,PL);txt(t,xs[i]+c[i]/2,y+hh/2,c[i],BLK,true,14)});
+for(var d=0;d<n;d++){box(xd+d*dw,y,dw,hh,PL);txt(toBn(d+1),xd+d*dw+dw/2,y+hh/2,dw,BLK,true,14)}
+box(xd+n*dw,y,tw,hh,PL);txt("টাকার পরিমাণ",xd+n*dw+tw/2,y+hh/2,tw,BLK,true,13);
+y+=hh;var g=0,any=false;
+S.people.forEach(function(pe,i){var row=arr[i];
+box(xs[0],y,c[0],rh,null);txt(toBn(i+1),xs[0]+c[0]/2,y+rh/2,c[0],BLK,false,13);
+box(xs[1],y,c[1],rh,null);txt(pe.p,xs[1]+c[1]/2,y+rh/2,c[1],BLK,true,13);
+box(xs[2],y,c[2],rh,null);txt(pe.n,xs[2]+4,y+rh/2,c[2],BLK,true,14,"left");
+for(var d2=0;d2<n;d2++){box(xd+d2*dw,y,dw,rh,null);if(row[d2]!=null)txt(toBn(row[d2]),xd+d2*dw+dw/2,y+rh/2,dw,RED,false,13);else txt("-",xd+d2*dw+dw/2,y+rh/2,dw,"#999",false,13)}
+var has=row.slice(0,n).some(function(v){return v!=null}),s=rowSum(row,n);if(has){any=true;g+=s}
+box(xd+n*dw,y,tw,rh,PL);if(has)txt(fm(s),xd+n*dw+tw/2,y+rh/2,tw,RED,true,14);y+=rh});
+box(pad,y,c[0]+c[1]+c[2]+n*dw,rh,PL);txt("মোট টাকা",pad+c[0]+c[1]+c[2]+n*dw-10,y+rh/2,c[0]+c[1]+c[2]+n*dw,BLK,true,14,"right");
+box(xd+n*dw,y,tw,rh,PL);if(any)txt(fm(g),xd+n*dw+tw/2,y+rh/2,tw,RED,true,15);
+x.fillStyle="#333";x.textAlign="right";x.font="11px "+FF;x.fillText("Create By Ocu Emon",W-6,H-5);
+return C.cv}
+function allCanvases(){return MEALS.map(function(m){return drawMeal(m[0])})}
+function pdfFrom(cvs){
+var enc=new TextEncoder(),parts=[],off=[],len=0,N=cvs.length;
+function add(b){if(typeof b=="string")b=enc.encode(b);parts.push(b);len+=b.length}
+function obj(k,head,st){off[k]=len;add(k+" 0 obj\n"+head+"\n");if(st){add("stream\n");add(st);add("\nendstream\n")}add("endobj\n")}
+add("%PDF-1.4\n");
+obj(1,"<< /Type /Catalog /Pages 2 0 R >>");
+var kids=[];for(var i=0;i<N;i++)kids.push((3+3*i)+" 0 R");
+obj(2,"<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+N+" >>");
+cvs.forEach(function(cv,i){
+var b64=cv.toDataURL("image/jpeg",0.92).split(",")[1],bin=atob(b64),jpg=new Uint8Array(bin.length);for(var q=0;q<bin.length;q++)jpg[q]=bin.charCodeAt(q);
+var pw=Math.round(cv.width/2*0.75),ph=Math.round(cv.height/2*0.75),pid=3+3*i,cid=4+3*i,iid=5+3*i,cs="q "+pw+" 0 0 "+ph+" 0 0 cm /Im0 Do Q";
+obj(pid,"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+pw+" "+ph+"] /Resources << /XObject << /Im0 "+iid+" 0 R >> >> /Contents "+cid+" 0 R >>");
+obj(cid,"<< /Length "+cs.length+" >>",cs);
+obj(iid,"<< /Type /XObject /Subtype /Image /Width "+cv.width+" /Height "+cv.height+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+jpg.length+" >>",jpg)});
+var total=3*N+3,xr=len;add("xref\n0 "+total+"\n0000000000 65535 f \n");
+for(var z=1;z<total;z++)add(("0000000000"+off[z]).slice(-10)+" 00000 n \n");
+add("trailer\n<< /Size "+total+" /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF");
+return new Blob(parts,{type:"application/pdf"})}
+
+document.getElementById("pdf").onclick=function(){try{var bl=pdfFrom(allCanvases()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="jco-mess-"+S.y+"-"+S.m+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("PDF বানানো যায়নি।")}};
+function openFs(){var b=document.getElementById("fsb");b.innerHTML="";try{allCanvases().forEach(function(cv){var im=document.createElement("img");im.src=cv.toDataURL("image/jpeg",0.9);b.appendChild(im)})}catch(e){}document.getElementById("fs").className="fs on"}
+function closeFs(){document.getElementById("fs").className="fs"}
+document.getElementById("pvb").onclick=openFs;
+document.getElementById("fsx").onclick=closeFs;
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeFs()});
+sync();build();
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+window.recFresh=function(){return fresh()};
+window.recNew=function(){var o=fresh();o.people=JSON.parse(JSON.stringify(S.people));MEALS.forEach(function(m){o.amt[m[0]]=o.people.map(blankDays)});o.type=S.type;return o};
+window.recName=function(){return "জেসিও মেস "+MN[+S.m-1]+" "+toBn(S.y)};
+window.recReload=function(){sync();build()};
+;(function(){
+var RK=KEY+"-rec",BK=RK+"-blank";
+var st=document.createElement("style");st.textContent=
+"#recbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:4px 0 8px}"+
+"#recbar b{flex:1;min-width:120px;font-size:13px;color:var(--tx)}"+
+"#recbar button,#recm button.rb{font:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:8px 10px;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx)}"+
+"#recbar button.pm{background:var(--ac);color:#fff;border-color:var(--ac)}"+
+"#recm{position:fixed;top:0;left:0;right:0;bottom:0;z-index:80;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}"+
+"#recm.on{display:flex}"+
+"#recm .bx{background:var(--card);color:var(--tx);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:16px 16px 0 0;padding:14px 14px calc(18px + env(safe-area-inset-bottom,0px))}"+
+"#recm h3{margin:0 0 8px;font-size:17px}"+
+"#recm .it{display:flex;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:6px 0}"+
+"#recm .it div{flex:1;min-width:0}"+
+"#recm .it b{display:block;font-size:15px;overflow-wrap:anywhere}"+
+"#recm .it small{color:var(--mu);font-size:11px}"+
+"#recm button.dl2{color:var(--bad)}"+
+"#recm .row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}"+
+"#rect{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#222;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;z-index:90;display:none}";
+document.head.appendChild(st);
+function rl(){try{return JSON.parse(localStorage.getItem(RK))||[]}catch(x){return[]}}
+function rs(a){try{localStorage.setItem(RK,JSON.stringify(a));return true}catch(x){alert("সেভ করা যায়নি, ফোনের জায়গা ভরে গেছে।");return false}}
+function norm(o){var c=JSON.parse(JSON.stringify(o));delete c.recName;return JSON.stringify(c)}
+function isSaved(){var n=norm(S);return rl().some(function(r){return norm(r.data)===n})}
+function isBlank(){var n=norm(S),f=null,b=null;try{f=norm(window.recFresh())}catch(e){}try{b=localStorage.getItem(BK)}catch(e){}return n===f||n===b}
+function dirty(){return !isSaved()&&!isBlank()}
+var bar=document.createElement("div");bar.id="recbar";
+bar.innerHTML='<b id="recn"></b><button class="pm" id="recsv">💾 রেকর্ড সেভ</button><button id="recop">📂 রেকর্ড খুলুন</button>';
+var back=document.querySelector(".back");if(back&&back.parentNode)back.parentNode.insertBefore(bar,back.nextSibling);else document.body.insertBefore(bar,document.body.firstChild);
+var tb=document.createElement("div");tb.id="rect";document.body.appendChild(tb);
+var modal=document.createElement("div");modal.id="recm";
+modal.innerHTML='<div class="bx"><h3>সেভ করা রেকর্ড</h3><div id="recl"></div><div class="row"><button class="rb" id="recnew">+ নতুন ফাঁকা হিসাব শুরু</button></div><div class="row"><button class="rb" id="recex">⬇ ব্যাকআপ ফাইল</button><button class="rb" id="recim">⬆ ফাইল থেকে আনুন</button></div><div class="row"><button class="rb" id="reccl" style="margin-left:auto">বন্ধ করুন</button></div><input type="file" id="recfile" accept=".json,application/json" style="display:none"></div>';
+document.body.appendChild(modal);
+function toast(m){tb.textContent=m;tb.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){tb.style.display="none"},2200)}
+function lab(){document.getElementById("recn").textContent="রেকর্ড: "+(S.recName||"সেভ করা হয়নি")}
+function dstr(ts){var d=new Date(ts);return toBn(d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear())}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function render(){var a=rl().slice().sort(function(x,y){return y.ts-x.ts}),h="";
+if(!a.length)h='<div style="color:var(--mu);font-size:14px;padding:10px 0">এখনও কোনো রেকর্ড সেভ করা নেই।</div>';
+a.forEach(function(r){h+='<div class="it"><div><b>'+esc(r.name)+'</b><small>সেভ: '+dstr(r.ts)+(S.recName===r.name?" · এখন খোলা":"")+'</small></div><button class="rb" data-o="'+r.id+'">খুলুন</button><button class="rb dl2" data-x="'+r.id+'">মুছুন</button></div>'});
+document.getElementById("recl").innerHTML=h;
+document.querySelectorAll("#recl button[data-o]").forEach(function(b){b.onclick=function(){openRec(this.dataset.o)}});
+document.querySelectorAll("#recl button[data-x]").forEach(function(b){b.onclick=function(){delRec(this.dataset.x)}})}
+function closeM(){modal.className=""}
+function doSave(){var def=S.recName||window.recName();var nm=prompt("রেকর্ডের নাম লিখুন (যেমন: জানুয়ারি ২০২৬)",def);if(nm===null)return;nm=nm.trim();if(!nm)return;
+var a=rl(),ix=-1;a.forEach(function(r,i){if(r.name===nm)ix=i});
+if(ix>=0&&nm!==S.recName&&!confirm("\""+nm+"\" নামে রেকর্ড আগেই আছে। এটা বদলে দেবেন?"))return;
+S.recName=nm;var rec={id:ix>=0?a[ix].id:String(Date.now()),name:nm,ts:Date.now(),data:JSON.parse(JSON.stringify(S))};
+if(ix>=0)a[ix]=rec;else a.push(rec);
+if(!rs(a)){return}save();lab();toast("সেভ হয়েছে: "+nm)}
+function openRec(id){var r=rl().filter(function(x){return x.id===id})[0];if(!r)return;
+if(dirty()&&!confirm("এখনকার হিসাব সেভ করা নেই। সেভ না করেই এই রেকর্ড খুলবেন? (না করতে চাইলে বাতিল দিয়ে আগে সেভ করুন)"))return;
+S=JSON.parse(JSON.stringify(r.data));S.recName=r.name;save();window.recReload();lab();closeM();toast("খোলা হয়েছে: "+r.name)}
+function delRec(id){var a=rl(),r=a.filter(function(x){return x.id===id})[0];if(!r)return;
+if(!confirm("\""+r.name+"\" রেকর্ডটা মুছবেন? আর ফেরানো যাবে না।"))return;
+rs(a.filter(function(x){return x.id!==id}));if(S.recName===r.name){delete S.recName;save();lab()}render()}
+function newRec(){if(dirty()&&!confirm("এখনকার হিসাব সেভ করা নেই। সেভ না করেই নতুন ফাঁকা হিসাব শুরু করবেন?"))return;
+S=window.recNew();delete S.recName;try{localStorage.setItem(BK,norm(S))}catch(e){}save();window.recReload();lab();closeM();toast("নতুন হিসাব শুরু")}
+function exp(){var o={app:KEY,ts:Date.now(),current:S,records:rl()},bl=new Blob([JSON.stringify(o)],{type:"application/json"}),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="backup-"+KEY+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}
+function imp(file){var fr=new FileReader();fr.onload=function(){try{var o=JSON.parse(fr.result);if(!o||o.app!==KEY||!Array.isArray(o.records)){alert("এটা এই পেজের ব্যাকআপ ফাইল না।");return}
+var a=rl(),n=0;o.records.forEach(function(r){if(!r||!r.name||!r.data)return;var ix=-1;a.forEach(function(x,i){if(x.name===r.name)ix=i});if(ix>=0)a[ix]=r;else a.push(r);n++});
+if(rs(a)){render();toast(toBn(n)+"টা রেকর্ড আনা হয়েছে")}}catch(e){alert("ফাইলটা পড়া যায়নি।")}};fr.readAsText(file)}
+document.getElementById("recsv").onclick=doSave;
+document.getElementById("recop").onclick=function(){render();modal.className="on"};
+document.getElementById("reccl").onclick=closeM;
+document.getElementById("recnew").onclick=newRec;
+document.getElementById("recex").onclick=exp;
+document.getElementById("recim").onclick=function(){document.getElementById("recfile").click()};
+document.getElementById("recfile").onchange=function(){if(this.files&&this.files[0])imp(this.files[0]);this.value=""};
+modal.onclick=function(e){if(e.target===modal)closeM()};
+lab();
+})();
+
+window.xlName="jco-mess";
+window.xlSheets=function(){var H={b:1,fill:"E1F0F3",al:"c"},n=dim(),out=[];
+MEALS.forEach(function(m){var arr=S.amt[m[0]],rows=[],first=5,last=4+S.people.length,tc=xlCol(3+n);
+rows.push([{v:ttl(),s:{b:1,nb:1}}]);rows.push([{v:"২৯ ডিভ লোকেটিং",s:{b:1,nb:1}}]);rows.push([{v:m[1],s:{b:1,nb:1}}]);
+var hd=[{v:"ক্রম",s:H},{v:"পদবী",s:H},{v:"নাম",s:H}];for(var d=1;d<=n;d++)hd.push({v:d,s:{b:1,fill:"E1F0F3",al:"c",nf:"0"}});hd.push({v:"টাকার পরিমাণ",s:H});rows.push(hd);
+var g=0;
+S.people.forEach(function(pe,i){var r=5+i,row=[{v:i+1,s:{nf:"0",al:"c"}},{v:pe.p,s:{b:1,al:"c"}},{v:pe.n,s:{b:1}}],s=0;
+for(var d2=0;d2<n;d2++){var v=arr[i][d2];if(v!=null)s+=v;row.push({v:v==null?"":v,s:{col:"C0201A"}})}
+g+=s;row.push({f:"SUM(D"+r+":"+xlCol(2+n)+r+")",v:r2(s),s:{b:1,col:"C0201A",fill:"E1F0F3"}});rows.push(row)});
+var tr=[{v:"মোট টাকা",s:{b:1,fill:"E1F0F3"}},{v:"",s:{fill:"E1F0F3"}},{v:"",s:{fill:"E1F0F3"}}];for(var d3=0;d3<n;d3++)tr.push({v:"",s:{fill:"E1F0F3"}});
+tr.push({f:"SUM("+tc+first+":"+tc+last+")",v:r2(g),s:{b:1,col:"C0201A",fill:"E1F0F3"}});rows.push(tr);
+var w=[7,9,22];for(var d4=0;d4<n;d4++)w.push(6);w.push(14);
+out.push({name:m[1],rows:rows,widths:w})});
+return out};
+;(function(){
+var enc=new TextEncoder(),CT=null;
+function crc(b){if(!CT){CT=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CT[n]=c>>>0}}var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function zip(files){var parts=[],cen=[],off=0;
+files.forEach(function(f){var nm=enc.encode(f.name),d=f.data,c=crc(d),lh=new DataView(new ArrayBuffer(30));
+lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(10,0,true);lh.setUint16(12,0x21,true);lh.setUint32(14,c,true);lh.setUint32(18,d.length,true);lh.setUint32(22,d.length,true);lh.setUint16(26,nm.length,true);
+parts.push(new Uint8Array(lh.buffer),nm,d);
+var ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(14,0x21,true);ch.setUint32(16,c,true);ch.setUint32(20,d.length,true);ch.setUint32(24,d.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,off,true);
+cen.push(new Uint8Array(ch.buffer),nm);off+=30+nm.length+d.length});
+var cs=0;cen.forEach(function(p){cs+=p.length});
+var ed=new DataView(new ArrayBuffer(22));ed.setUint32(0,0x06054b50,true);ed.setUint16(8,files.length,true);ed.setUint16(10,files.length,true);ed.setUint32(12,cs,true);ed.setUint32(16,off,true);
+return new Blob(parts.concat(cen,[new Uint8Array(ed.buffer)]),{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})}
+function colL(n){var s="";n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+window.xlCol=colL;
+window.xlBuild=function(sheets){
+var fonts=['<font><sz val="11"/><name val="Arial"/></font>'],fills=['<fill><patternFill patternType="none"/></fill>','<fill><patternFill patternType="gray125"/></fill>'],xfs=['<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'],keys={},fk={},flk={};
+function fontId(b,col){var k=(b?1:0)+"|"+(col||"");if(fk[k]!=null)return fk[k];fonts.push('<font>'+(b?'<b/>':'')+'<sz val="11"/>'+(col?'<color rgb="FF'+col+'"/>':'')+'<name val="Arial"/></font>');return fk[k]=fonts.length-1}
+function fillId(c){if(!c)return 0;if(flk[c]!=null)return flk[c];fills.push('<fill><patternFill patternType="solid"><fgColor rgb="FF'+c+'"/><bgColor indexed="64"/></patternFill></fill>');return flk[c]=fills.length-1}
+function sid(s){if(!s)return 0;var k=JSON.stringify([s.b,s.fill,s.col,s.nf,s.al,s.nb]);if(keys[k]!=null)return keys[k];
+var nf=s.nf==="3"?164:s.nf==="5"?165:s.nf==="0"?1:0,al=s.al?'<alignment horizontal="'+(s.al==="c"?"center":"left")+'" vertical="center" wrapText="1"/>':'';
+xfs.push('<xf numFmtId="'+nf+'" fontId="'+fontId(s.b,s.col)+'" fillId="'+fillId(s.fill)+'" borderId="'+(s.nb?0:1)+'" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"'+(al?' applyAlignment="1">'+al+'</xf>':'/>'));
+return keys[k]=xfs.length-1}
+var shx=[];
+sheets.forEach(function(sh){var rows=sh.rows,x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+if(sh.widths){x+='<cols>';sh.widths.forEach(function(w,i){x+='<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>'});x+='</cols>'}
+x+='<sheetData>';
+rows.forEach(function(r,ri){x+='<row r="'+(ri+1)+'">';r.forEach(function(c,ci){if(c==null)return;var o=(typeof c==="object")?c:{v:c},ref=colL(ci)+(ri+1),s=sid(o.s||(typeof c==="object"?null:{}));
+if(o.f){x+='<c r="'+ref+'" s="'+s+'"'+(typeof o.v==="string"?' t="str"':'')+'><f>'+esc(o.f)+'</f>'+(o.v!=null?'<v>'+esc(o.v)+'</v>':'')+'</c>'}
+else if(typeof o.v==="number"){x+='<c r="'+ref+'" s="'+s+'"><v>'+o.v+'</v></c>'}
+else if(o.v==null||o.v===""){x+='<c r="'+ref+'" s="'+s+'"/>'}
+else{x+='<c r="'+ref+'" s="'+s+'" t="inlineStr"><is><t xml:space="preserve">'+esc(o.v)+'</t></is></c>'}});x+='</row>'});
+x+='</sheetData>';
+if(sh.merges&&sh.merges.length){x+='<mergeCells count="'+sh.merges.length+'">';sh.merges.forEach(function(m){x+='<mergeCell ref="'+m+'"/>'});x+='</mergeCells>'}
+x+='</worksheet>';shx.push(x)});
+var styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.000"/><numFmt numFmtId="165" formatCode="0.00000"/></numFmts><fonts count="'+fonts.length+'">'+fonts.join('')+'</fonts><fills count="'+fills.length+'">'+fills.join('')+'</fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FF777777"/></left><right style="thin"><color rgb="FF777777"/></right><top style="thin"><color rgb="FF777777"/></top><bottom style="thin"><color rgb="FF777777"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="'+xfs.length+'">'+xfs.join('')+'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+var names=[],used={};
+sheets.forEach(function(sh,i){var n=String(sh.name||("Sheet"+(i+1))).replace(/[\[\]:*?\/\\]/g," ").slice(0,31);while(used[n])n=n.slice(0,28)+"_"+i;used[n]=1;names.push(n)});
+var ct='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>';
+sheets.forEach(function(s,i){ct+='<Override PartName="/xl/worksheets/sheet'+(i+1)+'.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'});ct+='</Types>';
+var wb='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>';
+names.forEach(function(n,i){wb+='<sheet name="'+esc(n)+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>'});wb+='</sheets></workbook>';
+var wr='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
+sheets.forEach(function(s,i){wr+='<Relationship Id="rId'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>'});
+wr+='<Relationship Id="rId'+(sheets.length+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+var rr='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+var files=[{name:"[Content_Types].xml",data:enc.encode(ct)},{name:"_rels/.rels",data:enc.encode(rr)},{name:"xl/workbook.xml",data:enc.encode(wb)},{name:"xl/_rels/workbook.xml.rels",data:enc.encode(wr)},{name:"xl/styles.xml",data:enc.encode(styles)}];
+shx.forEach(function(x,i){files.push({name:"xl/worksheets/sheet"+(i+1)+".xml",data:enc.encode(x)})});
+return zip(files)};
+function initBtn(){var pdfB=document.getElementById("pdf");if(!pdfB||!window.xlSheets)return;
+var b=document.createElement("button");b.className="s";b.id="xlb";b.textContent="📊 শীট";pdfB.parentNode.insertBefore(b,pdfB.nextSibling);
+var n=document.createElement("div");n.className="note";n.style.marginTop="8px";n.textContent="📊 শীট: এক্সেল ফাইল নামে, যেটা Google Sheets অ্যাপে খুলে সরাসরি এডিট করা যায় (মূল অ্যাপের ডাটা বদলায় না)।";pdfB.parentNode.parentNode.insertBefore(n,pdfB.parentNode.nextSibling);
+b.onclick=function(){try{var bl=xlBuild(window.xlSheets()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=(window.xlName||"sheet")+".xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("শীট বানানো যায়নি: "+e.message)}}}
+initBtn();
+})();
+
+</script>
+</body>
+</html>
