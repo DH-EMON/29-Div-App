@@ -2,9 +2,9 @@
    বদলাতে: password-tool.html দিয়ে লাইন বানিয়ে নিচের PW-তে ওই অ্যাপের লাইনটি বদলান। */
 (function(){
 var PW={
-sm:["65e917961ea4bc0388889c9b","02e2b828125a2066e27abc57e29e8a366be1221810751e3c5ff14b3f83be651b"],
-jco:["afa851f11a767efaf93e3e82","037f9144766acc79a2b4b6397a8f84b5cbf5574316046ae4219a06cb14ac82a7"],
-jq:["84b412f1e3aaff1d0621fe5e","5fa7ada31958bdcf50f2e55abb77422fb49ee4bdd5e78d560e1ece001d5318cb"]
+sm:["8b8a906387501ce22f60c388","c5b557709fb63af1b9864fc2364175d67867994c881db0378cdbb6f9aa9ba504"],
+jco:["0a0befdeb7c976a0f1a2ab92","c114fbe7dca586bff7193e18820cd3e8bdf0452c07e1982cb923ee0d36dc8978"],
+jq:["50d4733f0c0a5012c1269439","b7512dcfa3efbf3944536338f89c61967a657c77ef6b976c01c27832e100c253"]
 };
 var CFG={
 sm:{N:"সৈনিক মেস",T:"sm-theme",P:["#2f6b4f","#305496","#b42318","#6b3fa0","#c25a00","#374151"]},

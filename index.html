@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no">
+<head>
+<meta charset="utf-8">
+<script src="gate.js"></script>
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>29 Div locating Battery Artillery</title>
+<meta name="theme-color" content="#0d1b6b">
+<meta name="apple-mobile-web-app-title" content="29 Div locating Battery Artillery">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>try{var m=localStorage.getItem("div29-mode")||"auto";document.documentElement.setAttribute("data-mode",m=="auto"?(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"):m)}catch(e){document.documentElement.setAttribute("data-mode","light")}</script>
+<style>
+:root{--bg:#eef1f6;--card:#fff;--tx:#121826;--mu:#667085;--ln:#e3e7ef;--navy:#0d1b6b;--gold:#f2c200;--ac:#1d3fbf;--soft:#eef2ff;color-scheme:light;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-mode=dark]{--bg:#0a0f1f;--card:#131a2e;--tx:#e8ecf6;--mu:#98a2b8;--ln:#232c45;--ac:#8fa8ff;--soft:#1a2340;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Bengali","Nirmala UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px 40px}
+header{background:linear-gradient(160deg,#0d1b6b,#1a2f9e);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 74px;margin:0 -14px;border-radius:0 0 26px 26px}
+.top{display:flex;align-items:center;gap:12px}
+.top img{width:48px;height:48px;border-radius:50%;background:#fff;padding:2px;flex:none}
+.top h1{font-size:17px;line-height:1.25;margin:0;font-weight:800}
+.top small{display:block;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.12em;margin-top:2px}
+.ib{margin-left:auto;background:rgba(255,255,255,.14);border:0;color:#fff;width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer;flex:none}
+.pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:600;background:rgba(255,255,255,.14);padding:5px 10px;border-radius:99px;display:inline-flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:#12b76a}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:16px;box-shadow:0 4px 18px rgba(13,27,107,.07)}
+.clock{margin-top:-52px;text-align:center}
+.gr{font-size:14px;color:var(--mu);font-weight:600}
+.tm{font-size:46px;font-weight:800;line-height:1.15;margin:4px 0;font-variant-numeric:tabular-nums;cursor:pointer}
+.tm small{font-size:16px;font-weight:700;color:var(--ac);margin-left:6px}
+.dt{font-size:15px;font-weight:700}
+.dy{font-size:12.5px;color:var(--mu);margin-top:4px}
+h2{font-size:13px;color:var(--mu);letter-spacing:.06em;margin:22px 4px 10px;font-weight:800}
+.res{display:none;align-items:center;gap:10px;background:var(--soft);color:var(--ac);border-radius:14px;padding:11px 14px;margin-top:14px;font-weight:700;font-size:14px;text-decoration:none}
+.apps{display:flex;flex-direction:column;gap:11px}
+.app{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--tx);padding:14px}
+.app:active{transform:scale(.98)}
+.ic{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:#fff;flex:none}
+.ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.app b{font-size:18px;display:block}
+.app small{color:var(--mu);font-size:12.5px;display:block;margin-top:2px}
+.app em{font-style:normal;font-size:11.5px;color:var(--ac);font-weight:700;display:block;margin-top:3px}
+.app .ar{margin-left:auto;color:var(--mu);font-size:22px}
+textarea,input[type=date]{width:100%;font:inherit;font-size:15px;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:11px;outline:none}
+textarea{height:96px;resize:none}
+.nt{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-top:6px}
+.res2{font-size:20px;font-weight:800;color:var(--ac);text-align:center;margin-top:10px;min-height:28px}
+.btn{width:100%;margin-top:14px;border:0;border-radius:14px;padding:13px;background:var(--navy);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer;display:none}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;font-size:13px;color:var(--mu);font-weight:600}
+.foot a{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="top"><img src="icon-192.png" alt=""><h1>29 Div locating<br>Battery Artillery<small>PIONEER LOCATOR</small></h1><button class="ib" id="th" aria-label="থিম"></button></div>
+ <div class="pills"><span class="pill"><i class="dot" id="od"></i><span id="ot">অনলাইন</span></span><span class="pill" id="bt" style="display:none"></span></div>
+</header>
+
+<section class="card clock">
+ <div class="gr" id="gr"></div>
+ <div class="tm" id="tm" title="১২/২৪ ঘণ্টা পরিবর্তন"></div>
+ <div class="dt" id="dt"></div>
+ <div class="dy" id="dy"></div>
+</section>
+
+<a class="res" id="res" href="#"></a>
+
+<h2>অ্যাপসমূহ</h2>
+<div class="apps" id="apps"></div>
+
+<h2>দ্রুত নোট</h2>
+<section class="card"><textarea id="nt" placeholder="এখানে লিখে রাখুন… নিজে নিজেই সংরক্ষিত হবে"></textarea><div class="nt"><span id="ns">&nbsp;</span><span id="nc"></span></div></section>
+
+<h2>দিন গণনা</h2>
+<section class="card"><input type="date" id="dd"><div class="res2" id="dr"></div></section>
+
+<button class="btn" id="ins">📲 অ্যাপ ইনস্টল করুন</button>
+<div class="foot"><a href="#" onclick="smLock();return false">🔒 লক করুন</a><span>Create By Ocu Emon</span></div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+function bn(n){return String(n).replace(/\d/g,function(d){return"০১২৩৪৫৬৭৮৯".charAt(d)})}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var MD=ls("div29-mode")||"auto",MI={auto:"🌗",light:"☀️",dark:"🌙"};
+function applyMode(){var r=MD=="auto"?(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"):MD;document.documentElement.setAttribute("data-mode",r);$("th").textContent=MI[MD]}
+$("th").onclick=function(){MD=MD=="auto"?"light":MD=="light"?"dark":"auto";ls("div29-mode",MD);applyMode()};applyMode();
+var H24=ls("div29-24")=="1";
+$("tm").onclick=function(){H24=!H24;ls("div29-24",H24?"1":"0");tick()};
+function p2(n){return(n<10?"0":"")+n}
+function tick(){var d=new Date(),h=d.getHours(),m=d.getMinutes(),s=d.getSeconds(),ap="",hh=h,y=d.getFullYear();
+if(!H24){ap=h<12?"AM":"PM";hh=h%12||12}
+$("tm").innerHTML=bn(p2(hh)+":"+p2(m)+":"+p2(s))+"<small>"+(ap||"ঘণ্টা")+"</small>";
+$("gr").textContent=h<5?"শুভ রাত্রি":h<12?"সুপ্রভাত":h<15?"শুভ দুপুর":h<18?"শুভ অপরাহ্ন":h<20?"শুভ সন্ধ্যা":"শুভ রাত্রি";
+$("dt").textContent=d.toLocaleDateString("bn-BD",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+var doy=Math.round((new Date(y,d.getMonth(),d.getDate())-new Date(y,0,0))/864e5),len=((y%4==0&&y%100!=0)||y%400==0)?366:365;
+$("dy").textContent="বছরের "+bn(doy)+" তম দিন · সপ্তাহ "+bn(Math.ceil(doy/7))+" · বছর বাকি "+bn(len-doy)+" দিন"}
+tick();setInterval(tick,1000);
+function net(){var o=navigator.onLine;$("od").style.background=o?"#12b76a":"#f79009";$("ot").textContent=o?"অনলাইন":"অফলাইন"}
+addEventListener("online",net);addEventListener("offline",net);net();
+if(navigator.getBattery)navigator.getBattery().then(function(b){function u(){$("bt").style.display="inline-flex";$("bt").textContent=(b.charging?"⚡ ":"🔋 ")+bn(Math.round(b.level*100))+"%"}u();b.onlevelchange=u;b.onchargingchange=u}).catch(function(){});
+var APPS=[
+{k:"sm",n:"সৈনিক মেস",s:"ফ্রেশ, রেশন, খরচ ও জনবল হিসাব",u:"sm-menu.html",c:"#2f6b4f",i:'<path d="M5 3v7a2 2 0 0 0 2 2v9M9 3v7M13 3v7a2 2 0 0 1-2 2M18 3c-2 1-3 4-3 8h3v10"/>'},
+{k:"jco",n:"জেসিও মেস",s:"মেস হিসাব",u:"jco-menu.html",c:"#0f5f73",i:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>'},
+{k:"jq",n:"JQ STORE",s:"মসলা, শুকনা রসদ, রেশন হিসাব",u:"jq-menu.html",c:"#305496",i:'<path d="M4 9l1-5h14l1 5M4 9v11h16V9M4 9h16M10 20v-5h4v5"/>'}];
+function ago(t){var m=Math.floor((Date.now()-t)/6e4);return m<1?"এইমাত্র":m<60?bn(m)+" মিনিট আগে":m<1440?bn(Math.floor(m/60))+" ঘণ্টা আগে":bn(Math.floor(m/1440))+" দিন আগে"}
+var LA={};try{LA=JSON.parse(ls("div29-last"))||{}}catch(e){}
+function mark(k){LA[k]=Date.now();ls("div29-last",JSON.stringify(LA))}
+$("apps").innerHTML=APPS.map(function(a){return'<a class="card app" href="'+a.u+'" data-k="'+a.k+'"><div class="ic" style="background:'+a.c+'"><svg viewBox="0 0 24 24">'+a.i+'</svg></div><div><b>'+a.n+'</b><small>'+a.s+'</small>'+(LA[a.k]?"<em>সর্বশেষ খোলা: "+ago(LA[a.k])+"</em>":"")+'</div><span class="ar">›</span></a>'}).join("");
+Array.prototype.forEach.call(document.querySelectorAll(".app"),function(e){e.addEventListener("click",function(){mark(e.getAttribute("data-k"))})});
+var best=null;APPS.forEach(function(a){if(LA[a.k]&&(!best||LA[a.k]>LA[best.k]))best=a});
+if(best){var r=$("res");r.style.display="flex";r.href=best.u;r.textContent="▶ চালিয়ে যান: "+best.n;r.onclick=function(){mark(best.k)}}
+var nt=$("nt"),nto;nt.value=ls("div29-note")||"";
+function cnt(){$("nc").textContent=bn(nt.value.length)+" অক্ষর"}cnt();
+nt.oninput=function(){cnt();$("ns").textContent="লেখা হচ্ছে…";clearTimeout(nto);nto=setTimeout(function(){ls("div29-note",nt.value);$("ns").textContent="✓ সংরক্ষিত"},500)};
+var dd=$("dd");dd.value=ls("div29-date")||"";
+function dc(){if(!dd.value){$("dr").textContent="";return}ls("div29-date",dd.value);var a=dd.value.split("-"),t=new Date(+a[0],a[1]-1,+a[2]),n=new Date(),k=Math.round((t-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);
+$("dr").textContent=k==0?"আজই সেই দিন":k>0?bn(k)+" দিন বাকি":bn(-k)+" দিন আগে"}
+dd.onchange=dc;dc();
+var dp;addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e;$("ins").style.display="block"});
+$("ins").onclick=function(){if(dp){dp.prompt();dp=null;$("ins").style.display="none"}};
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>
