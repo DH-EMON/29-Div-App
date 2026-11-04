@@ -1,5 +1,5 @@
-var C="div29-v2";
-var F=["./", "./index.html", "./manifest.json", "./gate.js", "./jco-hisab.html", "./jco-menu.html", "./jq-jonobol.html", "./jq-masala.html", "./jq-menu.html", "./jq-mess.html", "./jq-ration.html", "./jq-rr.html", "./sm-daily.html", "./sm-fresh.html", "./sm-manpower.html", "./sm-menu.html", "./sm-mess.html"];
+var C="div29-v3";
+var F=["./", "./index.html", "./manifest.json", "./gate.js", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png", "./favicon-48.png", "./jco-hisab.html", "./jco-menu.html", "./jq-jonobol.html", "./jq-masala.html", "./jq-menu.html", "./jq-mess.html", "./jq-ration.html", "./jq-rr.html", "./sm-daily.html", "./sm-fresh.html", "./sm-manpower.html", "./sm-menu.html", "./sm-mess.html"];
 self.addEventListener("install",function(e){e.waitUntil(caches.open(C).then(function(c){return c.addAll(F)}).then(function(){return self.skipWaiting()}))});
 self.addEventListener("activate",function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(x){return x!==C}).map(function(x){return caches.delete(x)}))}).then(function(){return self.clients.claim()}))});
 self.addEventListener("fetch",function(e){if(e.request.method!=="GET")return;
