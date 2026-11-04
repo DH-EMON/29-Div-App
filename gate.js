@@ -1,31 +1,43 @@
-/* 29 Div — পাসওয়ার্ড গেট (প্রতিটি অ্যাপের আলাদা পাসওয়ার্ড)
-   পাসওয়ার্ড বদলাতে: password-tool.html থেকে পাওয়া s:"…",h:"…" লাইনটি নিচে ওই অ্যাপের s ও h এর জায়গায় বসান। */
+/* 29 Div — প্রতি অ্যাপের আলাদা পাসওয়ার্ড (sm = সৈনিক মেস, jco = জেসিও মেস, jq = JQ STORE)
+   বদলাতে: password-tool.html দিয়ে লাইন বানিয়ে নিচের PW-তে ওই অ্যাপের লাইনটি বদলান। */
 (function(){
-var APPS={
-sm:{n:"সৈনিক মেস",t:"sm-theme",c:["#2f6b4f","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
- s:"74e6fe5657576bd449e3a6dc",h:"e34ec207464f9b64d1c0c8f7567c3881fb5b61e02d1455821f6b3cfcfc3c7c29"},
-jco:{n:"জেসিও মেস",t:"jco-theme",c:["#0f5f73","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
- s:"2d133fca54bb663eccc6467e",h:"09bcd73ccca5eebf88c66b1cf228f7674e488e0b9dc2b931edfe9ccd07950e5b"},
-jq:{n:"JQ STORE",t:"rr-theme",c:["#305496","#1f7a4d","#b42318","#6b3fa0","#c25a00","#374151"],
- s:"7981aba9d545298e340e7b66",h:"3f2944465ec72abf95a7bd6dea22a5bb52cd3fc7de24df6ffef6e4d923fd221b"}
+var PW={
+sm:["8b8a906387501ce22f60c388","c5b557709fb63af1b9864fc2364175d67867994c881db0378cdbb6f9aa9ba504"],
+jco:["0a0befdeb7c976a0f1a2ab92","c114fbe7dca586bff7193e18820cd3e8bdf0452c07e1982cb923ee0d36dc8978"],
+jq:["50d4733f0c0a5012c1269439","b7512dcfa3efbf3944536338f89c61967a657c77ef6b976c01c27832e100c253"]
 };
-var M=/(?:^|\/)(sm|jco|jq)-[^\/]*$/.exec(location.pathname),A=M&&APPS[M[1]];
-if(!A)return;
-var SALT=A.s,HASH=A.h,ITER=10000,KEY=M[1]+"-auth",FK=M[1]+"-fail";
-//CORE//
+var CFG={
+sm:{N:"সৈনিক মেস",T:"sm-theme",P:["#2f6b4f","#305496","#b42318","#6b3fa0","#c25a00","#374151"]},
+jco:{N:"জেসিও মেস",T:"jco-theme",P:["#0f5f73","#305496","#b42318","#6b3fa0","#c25a00","#374151"]},
+jq:{N:"JQ STORE",T:"rr-theme",P:["#305496","#1f7a4d","#b42318","#6b3fa0","#c25a00","#374151"]}
+};
+var ITER=10000;
+var AM=location.pathname.match(/(?:^|\/)(sm|jco|jq)-[^\/]*$/),APP=AM?AM[1]:null,C=APP?CFG[APP]:null;
+var SALT=APP?PW[APP][0]:"",HASH=APP?PW[APP][1]:"",KEY="div29-auth-"+APP,FK="div29-fail-"+APP;
+var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+function utf8(s){var o=[],e=unescape(encodeURIComponent(s));for(var i=0;i<e.length;i++)o.push(e.charCodeAt(i));return o}
+function sha(m){var l=m.length,H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],b=m.slice();b.push(0x80);while(b.length%64!==56)b.push(0);var hi=Math.floor(l*8/4294967296),lo=(l*8)>>>0;b.push(hi>>>24&255,hi>>>16&255,hi>>>8&255,hi&255,lo>>>24&255,lo>>>16&255,lo>>>8&255,lo&255);var w=new Array(64),i,t;
+for(i=0;i<b.length;i+=64){for(t=0;t<16;t++)w[t]=(b[i+t*4]<<24|b[i+t*4+1]<<16|b[i+t*4+2]<<8|b[i+t*4+3])|0;
+for(t=16;t<64;t++){var x=w[t-15],y=w[t-2];w[t]=(w[t-16]+((x>>>7|x<<25)^(x>>>18|x<<14)^(x>>>3))+w[t-7]+((y>>>17|y<<15)^(y>>>19|y<<13)^(y>>>10)))|0}
+var a=H[0],bb=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+for(t=0;t<64;t++){var t1=(h+((e>>>6|e<<26)^(e>>>11|e<<21)^(e>>>25|e<<7))+((e&f)^(~e&g))+K[t]+w[t])|0,t2=(((a>>>2|a<<30)^(a>>>13|a<<19)^(a>>>22|a<<10))+((a&bb)^(a&c)^(bb&c)))|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=bb;bb=a;a=(t1+t2)|0}
+H[0]=(H[0]+a)|0;H[1]=(H[1]+bb)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0}
+var o=[];for(i=0;i<8;i++)o.push(H[i]>>>24&255,H[i]>>>16&255,H[i]>>>8&255,H[i]&255);return o}
+function derive(pw,salt,n){var s=utf8(salt),h=sha(s.concat(utf8(pw)));for(var i=0;i<n;i++)h=sha(h.concat(s));return h.map(function(x){return("0"+x.toString(16)).slice(-2)}).join("")}
+
 function ok(){try{return localStorage.getItem(KEY)===HASH||sessionStorage.getItem(KEY)===HASH}catch(e){return false}}
-window.smLock=function(){try{localStorage.removeItem(KEY);sessionStorage.removeItem(KEY)}catch(e){}location.reload()};
-if(ok())return;
+window.smLock=function(){try{for(var k in CFG){localStorage.removeItem("div29-auth-"+k);sessionStorage.removeItem("div29-auth-"+k)}}catch(e){}if(APP)location.href="index.html";else location.reload()};
+if(!C||ok())return;
 var de=document.documentElement,st=document.createElement("style");
 st.textContent="html{overflow:hidden!important}body{visibility:hidden!important}";de.appendChild(st);
 document.addEventListener("DOMContentLoaded",function(){if(document.body&&ov.parentNode)document.body.inert=true});
 function bn(n){return String(n).replace(/\d/g,function(d){return"০১২৩৪৫৬৭৮৯".charAt(d)})}
-var AC=A.c[0];try{AC=A.c[+localStorage.getItem(A.t)||0]||AC}catch(e){}
+var AC=C.P[0];try{var ti=+localStorage.getItem(C.T)||0;AC=C.P[ti]||AC}catch(e){}
 var ov=document.createElement("div");
 ov.setAttribute("style","position:fixed;inset:0;z-index:2147483647;background:#f5f6fa;display:flex;align-items:center;justify-content:center;padding:20px;font-family:system-ui,-apple-system,'Segoe UI','Noto Sans Bengali','Nirmala UI',Arial,sans-serif;color:#1b1f2a;visibility:visible");
 ov.innerHTML='<div style="width:100%;max-width:360px;background:#fff;border-radius:18px;padding:28px 22px;box-shadow:0 6px 30px rgba(0,0,0,.12);text-align:center">'
 +'<div style="font-size:42px;line-height:1">🔒</div>'
-+'<div style="font-size:22px;font-weight:700;margin:10px 0 4px">'+A.n+'</div>'
++'<div style="font-size:22px;font-weight:700;margin:10px 0 4px">'+C.N+'</div>'
 +'<div style="font-size:14px;color:#6b7280;margin-bottom:18px">প্রবেশ করতে পাসওয়ার্ড দিন</div>'
 +'<input id="gp" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড" style="width:100%;font-size:18px;padding:13px 14px;border:2px solid #c9ced9;border-radius:12px;outline:none;text-align:center;box-sizing:border-box;background:#fff;color:#1b1f2a">'
 +'<label style="display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;color:#6b7280;margin:12px 0"><input id="gr" type="checkbox" checked> এই ডিভাইসে মনে রাখুন</label>'
