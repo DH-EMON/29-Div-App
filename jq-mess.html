@@ -92,8 +92,8 @@ th.l,td.l{position:static;min-width:0;max-width:none}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body"><img id="fsi" alt="PDF প্রিভিউ"></div></div>
 <script>
 var PAL=[["#305496","#e8eefb"],["#1f7a4d","#e4f4ec"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e8eefb";
-try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1]}}catch(x){}
+var PL="#ffffff";
+try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff"}}catch(x){}
 
 var BD="০১২৩৪৫৬৭৮৯";
 function toBn(s){return String(s).replace(/[0-9]/g,function(d){return BD.charAt(+d)})}
@@ -270,14 +270,14 @@ lab();
 })();
 
 window.xlName="jq-mess-ration";
-window.xlSheets=function(){var H={b:1,fill:"E4F1EA",al:"c"},it=S.items,n=it.length,e=E(),rows=[],tot=0;
+window.xlSheets=function(){var H={b:1,fill:"FFFFFF",al:"c"},it=S.items,n=it.length,e=E(),rows=[],tot=0;
 rows.push([{v:ttlTxt(),s:{b:1,nb:1}}]);rows.push([{v:dateTxt(),s:{nb:1}}]);
 rows.push([{v:"জনবল",s:{b:1}},{v:S.jon,s:{nf:"0",col:"C0201A",b:1}}]);
 rows.push([{v:"গুণক",s:{b:1}},{v:S.mul,s:{nf:"0",col:"C0201A",b:1}}]);
 rows.push([{v:"সৈনিক মেস জনবল",s:{b:1}},{f:"B3*B4",v:e,s:{nf:"0",b:1}}]);
 rows.push([]);
 rows.push([{v:"ক্র/নং",s:H},{v:"আইটেম",s:H},{v:"জনবল",s:H},{v:"× হার",s:H},{v:"= পরিমাণ (কেজি)",s:H},{v:"মোট পরিমাণ",s:H}]);
-it.forEach(function(x,i){var r=8+i,v=e*x.r;tot+=v;rows.push([{v:i+1,s:{nf:"0",al:"c"}},{v:x.n,s:{b:1}},{f:"$B$5",v:e,s:{nf:"0"}},{v:x.r,s:{nf:"5",col:"C0201A"}},{f:"C"+r+"*D"+r,v:v,s:{nf:"3",col:"C0201A",b:1}},i===0?{f:"SUM(E8:E"+(7+n)+")",v:tot,s:{nf:"3",b:1,fill:"E4F1EA"}}:null])});
+it.forEach(function(x,i){var r=8+i,v=e*x.r;tot+=v;rows.push([{v:i+1,s:{nf:"0",al:"c"}},{v:x.n,s:{b:1}},{f:"$B$5",v:e,s:{nf:"0"}},{v:x.r,s:{nf:"5",col:"C0201A"}},{f:"C"+r+"*D"+r,v:v,s:{nf:"3",col:"C0201A",b:1}},i===0?{f:"SUM(E8:E"+(7+n)+")",v:tot,s:{nf:"3",b:1,fill:"FFFFFF"}}:null])});
 if(n>1)rows[7][5].v=tot;
 return[{name:"রেশন প্রদান",rows:rows,widths:[8,16,12,12,18,16]}]};
 

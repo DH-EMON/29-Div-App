@@ -168,8 +168,8 @@ tr.tt td.c1{background:var(--ac2)}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
 <script>
 var PAL=[["#0f5f73","#e1f0f3"],["#305496","#e8eefb"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e1f0f3",AC="#0f5f73";
-try{var th=+localStorage.getItem("jco-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1];AC=PAL[th][0]}}catch(x){}
+var PL="#ffffff",AC="#0f5f73";
+try{var th=+localStorage.getItem("jco-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff";AC=PAL[th][0]}}catch(x){}
 
 
 
@@ -360,16 +360,16 @@ lab();
 })();
 
 window.xlName="jco-mess";
-window.xlSheets=function(){var H={b:1,fill:"E1F0F3",al:"c"},n=dim(),out=[];
+window.xlSheets=function(){var H={b:1,fill:"FFFFFF",al:"c"},n=dim(),out=[];
 MEALS.forEach(function(m){var arr=S.amt[m[0]],rows=[],first=5,last=4+S.people.length,tc=xlCol(3+n);
 rows.push([{v:ttl(),s:{b:1,nb:1}}]);rows.push([{v:"২৯ ডিভ লোকেটিং",s:{b:1,nb:1}}]);rows.push([{v:m[1],s:{b:1,nb:1}}]);
-var hd=[{v:"ক্রম",s:H},{v:"পদবী",s:H},{v:"নাম",s:H}];for(var d=1;d<=n;d++)hd.push({v:d,s:{b:1,fill:"E1F0F3",al:"c",nf:"0"}});hd.push({v:"টাকার পরিমাণ",s:H});rows.push(hd);
+var hd=[{v:"ক্রম",s:H},{v:"পদবী",s:H},{v:"নাম",s:H}];for(var d=1;d<=n;d++)hd.push({v:d,s:{b:1,fill:"FFFFFF",al:"c",nf:"0"}});hd.push({v:"টাকার পরিমাণ",s:H});rows.push(hd);
 var g=0;
 S.people.forEach(function(pe,i){var r=5+i,row=[{v:i+1,s:{nf:"0",al:"c"}},{v:pe.p,s:{b:1,al:"c"}},{v:pe.n,s:{b:1}}],s=0;
 for(var d2=0;d2<n;d2++){var v=arr[i][d2];if(v!=null)s+=v;row.push({v:v==null?"":v,s:{col:"C0201A"}})}
-g+=s;row.push({f:"SUM(D"+r+":"+xlCol(2+n)+r+")",v:r2(s),s:{b:1,col:"C0201A",fill:"E1F0F3"}});rows.push(row)});
-var tr=[{v:"মোট টাকা",s:{b:1,fill:"E1F0F3"}},{v:"",s:{fill:"E1F0F3"}},{v:"",s:{fill:"E1F0F3"}}];for(var d3=0;d3<n;d3++)tr.push({v:"",s:{fill:"E1F0F3"}});
-tr.push({f:"SUM("+tc+first+":"+tc+last+")",v:r2(g),s:{b:1,col:"C0201A",fill:"E1F0F3"}});rows.push(tr);
+g+=s;row.push({f:"SUM(D"+r+":"+xlCol(2+n)+r+")",v:r2(s),s:{b:1,col:"C0201A",fill:"FFFFFF"}});rows.push(row)});
+var tr=[{v:"মোট টাকা",s:{b:1,fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}}];for(var d3=0;d3<n;d3++)tr.push({v:"",s:{fill:"FFFFFF"}});
+tr.push({f:"SUM("+tc+first+":"+tc+last+")",v:r2(g),s:{b:1,col:"C0201A",fill:"FFFFFF"}});rows.push(tr);
 var w=[7,9,22];for(var d4=0;d4<n;d4++)w.push(6);w.push(14);
 out.push({name:m[1],rows:rows,widths:w})});
 return out};

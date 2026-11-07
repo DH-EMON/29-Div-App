@@ -75,8 +75,8 @@ td.l{min-width:170px;max-width:170px}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body"><img id="fsi" alt="PDF প্রিভিউ"></div></div>
 <script>
 var PAL=[["#305496","#e8eefb"],["#1f7a4d","#e4f4ec"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e8eefb";
-try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1]}}catch(x){}
+var PL="#ffffff";
+try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff"}}catch(x){}
 var CFG={key:"stock2",title:"মাসিক মজুদ গণনা বোর্ড",ty:true,org:"২৯ ডিভ লোকেটিং ব্যাটারী আর্টিলারি",date:"/ /২০২৬",unit:false,cols:["চিনিগুঁড়া (কেজি)","চাউল সিদ্ধ (কেজি)","চিনি (কেজি)","আটা (কেজি)","তেল (কেজি)","ডাল মসুর (কেজি)","চা পাতা (কেজি)","লবণ (কেজি)","গুঁড়া দুধ (কেজি)","ম্যাচ নং","কেটু (লিটার)","এলপি গ্যাস নগদমূল্য","এলপি গ্যাস বিনামূল্য","ছোলা (কেজি)"],secs:[
 {rows:[{l:"পূর্বের জের আর মজুদ"},{l:"এসএসডি হতে গ্রহণ"},{l:"মোট মজুদ",fn:function(g,c){return g(0,0,c)+g(0,1,c)}}]},
 {rows:[{l:"নগদ মূল্যে প্রদান"},{l:"বিনা মূল্যে প্রদান"},{l:"মোট প্রদান",fn:function(g,c){return g(1,0,c)+g(1,1,c)}},{l:"আর আর ব্যালেন্স",fn:function(g,c){return g(0,2,c)-g(1,2,c)}}]},
@@ -296,7 +296,7 @@ lab();
 })();
 
 window.xlName="jq-"+CFG.key;
-window.xlSheets=function(){var H={b:1,fill:"E4F1EA",al:"c"},RD="C0201A",FL="E4F1EA",rows=[],map={},off=CFG.numcol?1:0,n=S.cols.length;
+window.xlSheets=function(){var H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A",FL="FFFFFF",rows=[],map={},off=CFG.numcol?1:0,n=S.cols.length;
 rows.push([{v:ttlTxt(),s:{b:1,nb:1}}]);
 if(CFG.org)rows.push([{v:CFG.org,s:{b:1,nb:1}}]);
 rows.push([{v:"তারিখঃ "+dateTxt(),s:{nb:1}}]);

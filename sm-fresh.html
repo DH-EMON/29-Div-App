@@ -87,8 +87,8 @@ button{font:inherit;border-radius:10px;padding:12px;cursor:pointer}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body"><img id="fsi" alt="PDF প্রিভিউ"></div></div>
 <script>
 var PAL=[["#2f6b4f","#e4f1ea"],["#305496","#e8eefb"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e4f1ea",AC="#2f6b4f";
-try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1];AC=PAL[th][0]}}catch(x){}
+var PL="#ffffff",AC="#2f6b4f";
+try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff";AC=PAL[th][0]}}catch(x){}
 
 var BD="০১২৩৪৫৬৭৮৯";
 function toBn(s){return String(s).replace(/[0-9]/g,function(d){return BD.charAt(+d)})}
@@ -339,7 +339,7 @@ lab();
 })();
 
 window.xlName="extra-fresh";
-window.xlSheets=function(){var out=[],H={b:1,fill:"E4F1EA",al:"c"};
+window.xlSheets=function(){var out=[],H={b:1,fill:"FFFFFF",al:"c"};
 TYPES.forEach(function(t){var tp=t[0],un=t[2],pages=S.data[tp].pages;
 pages.forEach(function(pg,p){
 var has=pg.rows.some(function(r){return r.a!=null||r.mj!=null||r.cv!=null||r.fj!=null||r.fs!=null||r.ds});
@@ -350,7 +350,7 @@ rows.push([{v:"২৯ লোকেটিং ব্যাটারী"+(pages.len
 rows.push([]);
 rows.push(["তারিখ","ফ্রেশ জনবল","ফ্রেশ সংগ্রহ","মেস জনবল","সিভিল","মোট জনবল","খরচের বিবরণ","পরিমাণ ("+un+")","ব্যালেন্স ("+un+")","মন্তব্য"].map(function(x){return{v:x,s:H}}));
 function dtx(o){return(o.d||o.m)?(o.d?toBn(o.d):"  ")+"/"+(o.m?toBn(o.m):"  ")+"/"+yy():""}
-rows.push([{v:dtx(pg.open),s:{al:"c"}},"-","-","-","-","-",{v:"পূর্বের পাতার জের",s:{b:1}},"",{v:ob,s:{nf:"3",b:1,col:"C0201A",fill:"E4F1EA"}},""]);
+rows.push([{v:dtx(pg.open),s:{al:"c"}},"-","-","-","-","-",{v:"পূর্বের পাতার জের",s:{b:1}},"",{v:ob,s:{nf:"3",b:1,col:"C0201A",fill:"FFFFFF"}},""]);
 pg.rows.forEach(function(r,i){var rr=6+i,add=r.ds===ADD,has=r.a!=null;if(has)prev=add?prev+r.a:prev-r.a;
 var tj=(r.mj==null&&r.cv==null)?"":(r.mj||0)+(r.cv||0);
 rows.push([{v:dtx(r),s:{al:"c"}},{v:r.fj==null?"":r.fj,s:{nf:"0",col:"C0201A"}},{v:r.fs==null?"":r.fs,s:{nf:"0",col:"C0201A"}},{v:r.mj==null?"":r.mj,s:{nf:"0",col:"C0201A"}},{v:r.cv==null?"":r.cv,s:{nf:"0",col:"C0201A"}},

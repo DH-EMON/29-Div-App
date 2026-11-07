@@ -74,8 +74,8 @@ td.l{min-width:170px;max-width:170px}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body"><img id="fsi" alt="PDF প্রিভিউ"></div></div>
 <script>
 var PAL=[["#305496","#e8eefb"],["#1f7a4d","#e4f4ec"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e8eefb";
-try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1]}}catch(x){}
+var PL="#ffffff";
+try{var th=+localStorage.getItem("rr-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff"}}catch(x){}
 var CFG={key:"ration2",title:"ষ্টোরের রেশন বিক্রয়ের হিসাব",date:"/ /২০২৬",numcol:true,unit:false,cols:["চাউল","চিনি","আটা","তৈল","ডাল","চা পাতা","লবন","গুড়াদুধ","মরিচ","হলুদ","ধনিয়া","জিরা","এলাচ","দারুচিনি","লবঙ্গ","পাচফোড়ণ","তেজপাতা","গ্যাস"],secs:[
 {rows:[{n:"১।",l:"নগদ মূল্যে রেশন"},{n:"২।",l:"অতিরিক্ত রেশন"},{n:"৩।",l:"সেলিম ও এনামুল"},{n:"৪।",l:"মোট রেশন",fn:function(g,c){return g(0,0,c)+g(0,1,c)+g(0,2,c)}}]},
 {rows:[{n:"৫।",l:"সৈনিকের মাঝে বিতরণ"},{n:"৬।",l:"ফ্যামিলিম্যান এর চীট"},{n:"৭।",l:"মোট বিতরণ",fn:function(g,c){return g(1,0,c)+g(1,1,c)}}]},
@@ -294,7 +294,7 @@ lab();
 })();
 
 window.xlName="jq-"+CFG.key;
-window.xlSheets=function(){var H={b:1,fill:"E4F1EA",al:"c"},RD="C0201A",FL="E4F1EA",rows=[],map={},off=CFG.numcol?1:0,n=S.cols.length;
+window.xlSheets=function(){var H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A",FL="FFFFFF",rows=[],map={},off=CFG.numcol?1:0,n=S.cols.length;
 rows.push([{v:ttlTxt(),s:{b:1,nb:1}}]);
 if(CFG.org)rows.push([{v:CFG.org,s:{b:1,nb:1}}]);
 rows.push([{v:"তারিখঃ "+dateTxt(),s:{nb:1}}]);

@@ -147,8 +147,8 @@ tr.tot td.c3{background:var(--ac2)}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ (সব পেজ)</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
 <script>
 var PAL=[["#2f6b4f","#e4f1ea"],["#305496","#e8eefb"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e4f1ea",AC="#2f6b4f";
-try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1];AC=PAL[th][0]}}catch(x){}
+var PL="#ffffff",AC="#2f6b4f";
+try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff";AC=PAL[th][0]}}catch(x){}
 
 
 
@@ -499,7 +499,7 @@ lab();
 })();
 
 window.xlName="daily-ration";
-window.xlSheets=function(){var out=[],old=S.type,H={b:1,fill:"E4F1EA",al:"c"},RD="C0201A";
+window.xlSheets=function(){var out=[],old=S.type,H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A";
 try{TYPES.forEach(function(t){S.type=t[0];var T=TT(),n=T.cols.length;
 var er=[[{v:"অতিরিক্তের হিসাব - "+t[1],s:{b:1,nb:1}}],[{v:"মাসের মোট জনবল",s:{b:1}},{v:T.ex.mj==null?"":T.ex.mj,s:{nf:"0",col:RD,b:1}}],[{v:"আইটেম",s:H},{v:"মাস শেষে অতিরিক্ত",s:H},{v:"মাসিক গড়",s:H}]];
 T.ex.rows.forEach(function(r,i){var rw=4+i;er.push([{v:r.n,s:{b:1}},{v:r.q==null?"":r.q,s:{nf:"3",col:RD}},{f:'IF(OR($B$2="",B'+rw+'=""),"",B'+rw+'/$B$2)',v:(r.q==null||!T.ex.mj)?"":r.q/T.ex.mj,s:{nf:"5"}}])});
@@ -512,7 +512,7 @@ rows.push([{v:"তারিখ",s:H},{v:"জনবল",s:H},{v:"বিবরণ"
 if(!cont)rows.push([{v:dtxt(pdx.g),s:{al:"c"}},{v:pg.g.j==null?"":pg.g.j,s:{nf:"0",col:RD,b:1}},{v:"গ্রহণ",s:{b:1,col:RD}}].concat(res.map(function(c){return{v:c.g==null?"":c.g,s:{nf:"3",col:RD,b:1}}})));
 pg.days.forEach(function(d,k){if(pdx.hid[k])return;labs.forEach(function(L,ri){
 rows.push([{v:ri===0?dtxt(pdx.days[k]):"",s:{al:"c"}},{v:ri===0&&d.j!=null?d.j:"",s:{nf:"0",col:RD,b:1}},{v:L[0],s:{b:1,col:L[2]?RD:null}}].concat(res.map(function(c){var z=c.d[k];return{v:z?z[L[1]]:"",s:{nf:"3",col:L[2]?RD:null,b:L[2]?1:0}}})))})});
-if(!nextCont)rows.push([{v:pdx.last>=0?dtxt(pdx.days[pdx.last]):"",s:{al:"c",fill:"E4F1EA"}},{v:"JQ স্টোর",s:{b:1,fill:"E4F1EA"}},{v:"জমা",s:{b:1,col:RD,fill:"E4F1EA"}}].concat(res.map(function(c){return{v:c.j==null?"":c.j,s:{nf:"3",col:RD,b:1,fill:"E4F1EA"}}})));
+if(!nextCont)rows.push([{v:pdx.last>=0?dtxt(pdx.days[pdx.last]):"",s:{al:"c",fill:"FFFFFF"}},{v:"JQ স্টোর",s:{b:1,fill:"FFFFFF"}},{v:"জমা",s:{b:1,col:RD,fill:"FFFFFF"}}].concat(res.map(function(c){return{v:c.j==null?"":c.j,s:{nf:"3",col:RD,b:1,fill:"FFFFFF"}}})));
 out.push({name:t[1]+" পেজ "+toBn(p+1),rows:rows,widths:[13,10,11].concat(T.cols.map(function(){return 11}))})}
 var bl=sumBlocks(T).filter(function(b){return b.ok}),sr=[];
 sr.push([{v:sumTitle(),s:{b:1,nb:1}}]);sr.push([{v:"২৯ ডিভ লোকেটিং ব্যাটারী ("+t[1]+")",s:{b:1,nb:1}}]);
@@ -520,7 +520,7 @@ sr.push(["ইস্যু তারিখ","হইতে","পর্যন্ত
 var tg=T.cols.map(function(){return 0}),tx=tg.slice();
 bl.forEach(function(b){["গ্রহণ","খরচ","মজুদ"].forEach(function(lab,ri){var first=ri===0,red=ri!==1;
 sr.push([{v:first?dtxt(b.eff):"",s:{al:"c"}},{v:first?dtxt(b.from):"",s:{al:"c"}},{v:first?dtxt(b.to):"",s:{al:"c"}},{v:first?b.days:"",s:{nf:"0",al:"c"}},{v:first&&b.wj!=null?b.wj:"",s:{nf:"0",col:RD,b:1}},{v:lab,s:{b:1,col:red?RD:null}}].concat(b.res.map(function(c,ci){var s=sv(c),v=ri===0?s.g:ri===1?s.x:s.j;if(v!=null){if(ri===0)tg[ci]+=v;if(ri===1)tx[ci]+=v}return{v:v==null?"":v,s:{nf:"3",col:red?RD:null,b:red?1:0}}})))})});
-[["মোট গ্রহণ",tg,true],["মোট খরচ",tx,false],["মোট মজুদ",tg.map(function(g,i){return r3(g-tx[i])}),true]].forEach(function(r){sr.push([{v:"",s:{fill:"E4F1EA"}},{v:"",s:{fill:"E4F1EA"}},{v:"",s:{fill:"E4F1EA"}},{v:"",s:{fill:"E4F1EA"}},{v:"",s:{fill:"E4F1EA"}},{v:r[0],s:{b:1,fill:"E4F1EA",col:r[2]?RD:null}}].concat(r[1].map(function(v){return{v:r3(v),s:{nf:"3",b:1,fill:"E4F1EA",col:r[2]?RD:null}}})))});
+[["মোট গ্রহণ",tg,true],["মোট খরচ",tx,false],["মোট মজুদ",tg.map(function(g,i){return r3(g-tx[i])}),true]].forEach(function(r){sr.push([{v:"",s:{fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{v:r[0],s:{b:1,fill:"FFFFFF",col:r[2]?RD:null}}].concat(r[1].map(function(v){return{v:r3(v),s:{nf:"3",b:1,fill:"FFFFFF",col:r[2]?RD:null}}})))});
 out.push({name:t[1]+" সামারী",rows:sr,widths:[13,12,12,9,11,12].concat(T.cols.map(function(){return 11}))})})}finally{S.type=old}
 return out};
 

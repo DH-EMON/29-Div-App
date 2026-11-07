@@ -157,8 +157,8 @@ tr.tt td.sn,tr.tt td.dtl{background:var(--ac2)}
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
 <script>
 var PAL=[["#2f6b4f","#e4f1ea"],["#305496","#e8eefb"],["#b42318","#fdeceb"],["#6b3fa0","#f1eaf9"],["#c25a00","#fdf0e3"],["#374151","#eceef2"]];
-var PL="#e4f1ea",AC="#2f6b4f";
-try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL=PAL[th][1];AC=PAL[th][0]}}catch(x){}
+var PL="#ffffff",AC="#2f6b4f";
+try{var th=+localStorage.getItem("sm-theme")||0;if(th>=0&&th<PAL.length){var rs=document.documentElement.style;rs.setProperty("--ac",PAL[th][0]);rs.setProperty("--ac2",PAL[th][1]);PL="#ffffff";AC=PAL[th][0]}}catch(x){}
 
 
 
@@ -352,7 +352,7 @@ lab();
 
 window.xlName="daily-manpower";
 window.xlSheets=function(){var out=[];TYPES.forEach(function(t){
-var nm=BASE0[t[0]].map(function(p){return p[0]}),B=S.base[t[0]],n=rowCount(),H={b:1,fill:"E4F1EA",al:"c"},rows=[],last=4+n;
+var nm=BASE0[t[0]].map(function(p){return p[0]}),B=S.base[t[0]],n=rowCount(),H={b:1,fill:"FFFFFF",al:"c"},rows=[],last=4+n;
 rows.push([{v:"দৈনিক জনবল - "+toBn(S.y)+" ("+t[1]+")",s:{b:1,nb:1}}]);
 rows.push([{v:"২৯ ডিভ লোকেটিং ব্যাটারী",s:{b:1,nb:1}}]);
 rows.push([{v:"ক্রম",s:H},{v:"তারিখ",s:H},{v:"জনবল",s:H}].concat(nm.map(function(c){return{v:c,s:H}})));
@@ -362,8 +362,8 @@ for(var i=0;i<n;i++){var r=5+i,j=S.jon[i],row=[{v:(+S.n||1)+i,s:{nf:"0",al:"c"}}
 if(j!=null)sj+=j;
 nm.forEach(function(c,k){var L=xlCol(3+k),v=j==null?"":B[c]*j;if(j!=null)st[k]+=B[c]*j;row.push({f:'IF($C'+r+'="","",'+L+'$4*$C'+r+')',v:v,s:{nf:"3"}})});
 rows.push(row)}
-var tot=[{v:"মোট",s:{b:1,fill:"E4F1EA"}},{v:"",s:{fill:"E4F1EA"}},{f:"SUM(C5:C"+last+")",v:sj,s:{nf:"0",b:1,col:"C0201A",fill:"E4F1EA"}}];
-nm.forEach(function(c,k){var L=xlCol(3+k);tot.push({f:"SUM("+L+"5:"+L+last+")",v:st[k],s:{nf:"3",b:1,col:"C0201A",fill:"E4F1EA"}})});
+var tot=[{v:"মোট",s:{b:1,fill:"FFFFFF"}},{v:"",s:{fill:"FFFFFF"}},{f:"SUM(C5:C"+last+")",v:sj,s:{nf:"0",b:1,col:"C0201A",fill:"FFFFFF"}}];
+nm.forEach(function(c,k){var L=xlCol(3+k);tot.push({f:"SUM("+L+"5:"+L+last+")",v:st[k],s:{nf:"3",b:1,col:"C0201A",fill:"FFFFFF"}})});
 rows.push(tot);
 out.push({name:t[1],rows:rows,widths:[8,12,10].concat(nm.map(function(){return 11}))})});
 return out};
