@@ -34,6 +34,11 @@ window.smLock=function(){
   }catch(e){done()}
 };
 
+/* অফলাইন ও দ্রুত লোডের জন্য Service Worker */
+try{if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){
+  window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+}}catch(e){}
+
 if(!APP)return;
 
 var EMAIL=APP+"@div29.app",PATH="apps/"+APP+"/kv",FLAG="div29-synced-"+APP;
@@ -68,6 +73,7 @@ if(typeof firebase==="undefined"||!firebase.auth||!firebase.firestore){
 }
 
 var app=getApp(APP),auth=app.auth(),db=app.firestore();
+try{db.settings({experimentalAutoDetectLongPolling:true,merge:true})}catch(e){}
 try{db.enablePersistence({synchronizeTabs:true}).catch(function(){})}catch(e){}
 
 /* ---------- সিঙ্ক ইঞ্জিন ---------- */
@@ -164,6 +170,26 @@ function reconcile(snap){
   unlock();badge();
   if(changed)banner();
 }
+function lateReconcile(snap){
+  var n=0,ids={};
+  snap.forEach(function(d){
+    var k=d.id;ids[k]=1;
+    if(d.metadata.hasPendingWrites||!sk(k)||touched[k])return;
+    var v=d.data().v,lv=null;try{lv=localStorage.getItem(k)}catch(e){}
+    if(lv!==v){
+      if(lv!=null){try{OS.call(localStorage,"div29-bak-"+k,lv)}catch(e){}}
+      try{OS.call(localStorage,k,v);n++}catch(e){}
+    }
+  });
+  keys().forEach(function(k){if(!ids[k]&&!touched[k])pushKey(k)});
+  try{OS.call(localStorage,FLAG,"1")}catch(e){}
+  reconciled=true;
+  if(n){
+    if(!Object.keys(touched).length&&canReload()){location.reload();return}
+    banner();
+  }
+  badge();
+}
 function remote(snap){
   var n=0;
   snap.docChanges().forEach(function(ch){
@@ -175,18 +201,19 @@ function remote(snap){
   if(n)banner();
 }
 
-var started=false;
+var started=false,early=false;
 function startSync(){
   if(started)return;started=true;
   say("ডেটা লোড হচ্ছে…");
   /* নেট ধীর বা না থাকলে ১০ সেকেন্ড পর ফোনের ডেটা দিয়েই খুলবে */
+  var wasSynced=false;try{wasSynced=!!localStorage.getItem(FLAG)}catch(e){}
   setTimeout(function(){
-    if(!reconciled&&!ready){ready=true;unlock();badge()}
-  },10000);
+    if(!reconciled&&!ready){ready=true;early=true;unlock();badge()}
+  },wasSynced?1500:10000);
   db.collection(PATH).onSnapshot(function(snap){
     if(!reconciled){
       if(snap.metadata.fromCache)return;
-      reconcile(snap);
+      if(early)lateReconcile(snap);else reconcile(snap);
     }else remote(snap);
   },function(e){
     lastErr=e&&e.code||"error";
