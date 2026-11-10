@@ -15,9 +15,9 @@ var NAMES={sm:"সৈনিক মেস",jco:"জেসিও মেস",jq:"JQ
 var PREFIX={sm:"sm-",jco:"jco-",jq:"rr-"};
 var THEME={sm:"sm-theme",jco:"jco-theme",jq:"rr-theme"};
 var PAL={
-  sm:["#2f6b4f","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
-  jco:["#0f5f73","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
-  jq:["#305496","#1f7a4d","#b42318","#6b3fa0","#c25a00","#374151"]
+  sm:["#4b5320","#13294b","#a67c00","#3a4118","#0b1c36","#7d5f00"],
+  jco:["#13294b","#4b5320","#a67c00","#0b1c36","#3a4118","#7d5f00"],
+  jq:["#a67c00","#4b5320","#13294b","#7d5f00","#3a4118","#0b1c36"]
 };
 var AM=location.pathname.match(/(?:^|\/)(sm|jco|jq)-[^\/]*$/),APP=AM?AM[1]:null;
 var D=document.documentElement;
