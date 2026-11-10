@@ -11,15 +11,17 @@ var FC={
   messagingSenderId:"1026392190900",
   appId:"1:1026392190900:web:7366c33ec5c13ea63a0ce1"
 };
-var NAMES={sm:"সৈনিক মেস",jco:"জেসিও মেস",jq:"JQ STORE"};
-var PREFIX={sm:"sm-",jco:"jco-",jq:"rr-"};
-var THEME={sm:"sm-theme",jco:"jco-theme",jq:"rr-theme"};
+var NAMES={sm:"সৈনিক মেস",jco:"জেসিও মেস",jq:"JQ STORE",op:"আপনার মন্তব্য",opadmin:"অ্যাডমিন · আপনার মন্তব্য"};
+var PREFIX={sm:"sm-",jco:"jco-",jq:"rr-",op:"op-",opadmin:"opadmin-"};
+var THEME={sm:"sm-theme",jco:"jco-theme",jq:"rr-theme",op:"op-theme",opadmin:"opadmin-theme"};
 var PAL={
   sm:["#2f6b4f","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
   jco:["#0f5f73","#305496","#b42318","#6b3fa0","#c25a00","#374151"],
-  jq:["#305496","#1f7a4d","#b42318","#6b3fa0","#c25a00","#374151"]
+  jq:["#305496","#1f7a4d","#b42318","#6b3fa0","#c25a00","#374151"],
+  op:["#6b3fa0","#305496","#2f6b4f","#b42318","#c25a00","#374151"],
+  opadmin:["#6b3fa0","#305496","#2f6b4f","#b42318","#c25a00","#374151"]
 };
-var AM=location.pathname.match(/(?:^|\/)(sm|jco|jq)-[^\/]*$/),APP=AM?AM[1]:null;
+var AM=location.pathname.match(/(?:^|\/)(opadmin|op|sm|jco|jq)-[^\/]*$/),APP=AM?AM[1]:null;
 var D=document.documentElement;
 
 function getApp(n){try{return firebase.app(n)}catch(e){return firebase.initializeApp(FC,n)}}
@@ -29,7 +31,7 @@ window.smLock=function(){
   var done=function(){if(APP)location.href="index.html";else location.reload()};
   try{
     if(typeof firebase==="undefined"||!firebase.auth)return done();
-    var ps=["sm","jco","jq"].map(function(n){return getApp(n).auth().signOut()});
+    var ps=["sm","jco","jq","op","opadmin"].map(function(n){return getApp(n).auth().signOut()});
     Promise.all(ps).then(done,done);
   }catch(e){done()}
 };
@@ -39,7 +41,10 @@ try{if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hos
   window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 }}catch(e){}
 
+var readyRes;window.div29Ready=new Promise(function(r){readyRes=r});
+
 if(!APP)return;
+var NOSYNC=(APP==="op"||APP==="opadmin");
 
 var EMAIL=APP+"@div29.app",PATH="apps/"+APP+"/kv",FLAG="div29-synced-"+APP;
 var AC=PAL[APP][0];
@@ -251,7 +256,7 @@ function showLogin(){
 }
 
 auth.onAuthStateChanged(function(u){
-  if(u&&u.email===EMAIL)startSync();
+  if(u&&u.email===EMAIL){if(NOSYNC){if(!started){started=true;unlock();readyRes({app:app,db:db,auth:auth})}}else startSync()}
   else{if(u)auth.signOut();if(!started)showLogin();else location.reload()}
 });
 })();

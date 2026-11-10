@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="bn" translate="no">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script>
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>দরবার পয়েন্ট</title>
+<meta name="theme-color" content="#6b3fa0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script>try{var m=localStorage.getItem("div29-mode")||"auto";document.documentElement.setAttribute("data-mode",m=="auto"?(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"):m)}catch(e){document.documentElement.setAttribute("data-mode","light")}</script>
+<style>
+:root{--bg:#eef1f6;--card:#fff;--tx:#121826;--mu:#667085;--ln:#e3e7ef;--ac:#6b3fa0;--gold:#f2c200;--ok:#12b76a;--bad:#b42318;color-scheme:light;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-mode=dark]{--bg:#0a0f1f;--card:#131a2e;--tx:#e8ecf6;--mu:#98a2b8;--ln:#232c45;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Bengali","Nirmala UI",Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:520px;margin:0 auto;padding:0 14px 40px}
+header{background:linear-gradient(160deg,var(--ac),#0d1b6b);color:#fff;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 54px;margin:0 -14px;border-radius:0 0 28px 28px}
+.bar{display:flex;align-items:center;gap:8px}
+.bar .sp{flex:1}
+.ib{background:rgba(255,255,255,.16);border:0;color:#fff;height:38px;min-width:38px;padding:0 12px;border-radius:99px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+header h1{margin:16px 0 0;font-size:23px;line-height:1.25;font-weight:800}
+header small{display:block;font-size:12px;opacity:.85;margin-top:4px;font-weight:600}
+.list{margin-top:-30px;display:flex;flex-direction:column;gap:13px}
+.priv{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.5;color:var(--mu);box-shadow:0 4px 18px rgba(13,27,107,.08)}
+.priv b{color:var(--tx)}
+.poll{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(13,27,107,.08)}
+.poll h3{margin:0 0 4px;font-size:18px;line-height:1.35}
+.desc{color:var(--mu);font-size:14px;line-height:1.5;margin:4px 0 8px;white-space:pre-wrap}
+.meta{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--mu);margin:8px 0 12px}
+.meta b{color:var(--tx)}
+.st{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+.st.on{background:rgba(18,183,106,.14);color:#067647}
+.st.off{background:rgba(180,35,24,.12);color:var(--bad)}
+.opt{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:15.5px;color:var(--tx);background:var(--bg);border:2px solid var(--ln);border-radius:14px;padding:12px;margin-top:8px;cursor:pointer}
+.opt i{width:20px;height:20px;border-radius:50%;border:2px solid var(--mu);flex:none;position:relative}
+.opt.sel{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,var(--card))}
+.opt.sel i{border-color:var(--ac)}
+.opt.sel i::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--ac)}
+textarea{width:100%;font:inherit;font-size:14.5px;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:10px;outline:none;height:72px;resize:none;margin-top:10px}
+.go{width:100%;margin-top:12px;border:0;border-radius:14px;padding:13px;background:var(--ac);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.go:disabled{opacity:.55}
+.msg{min-height:20px;margin-top:10px;font-size:14px;font-weight:700;text-align:center}
+.bars{margin-top:6px}
+.br{margin-top:10px}
+.br .t{display:flex;justify-content:space-between;gap:8px;font-size:14.5px;margin-bottom:4px}
+.br .t span:last-child{font-weight:800;white-space:nowrap}
+.tr{height:12px;border-radius:99px;background:var(--bg);overflow:hidden;border:1px solid var(--ln)}
+.fl{height:100%;border-radius:99px;background:var(--ac)}
+.br.me .t span:first-child::after{content:" ✓ আপনার ভোট";color:var(--ok);font-weight:800;font-size:12.5px}
+.tot{font-size:13px;color:var(--mu);margin-top:10px;text-align:center}
+.empty{text-align:center;color:var(--mu);padding:30px 10px;font-size:15px}
+.foot{text-align:center;margin-top:24px;font-size:13px;color:var(--mu);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="bar"><a class="ib" href="op-menu.html">‹ মেনু</a><span class="sp"></span><button class="ib" id="rf" aria-label="রিফ্রেশ">⟳</button><a class="ib" href="#" onclick="smLock();return false">🔒</a></div>
+ <h1 id="ttl">দরবার পয়েন্ট</h1><small>আপনার মন্তব্য · 29 Div locating Battery Artillery</small>
+</header>
+<div class="list">
+ <div class="priv">🔒 <b>আপনার পরিচয় সম্পূর্ণ গোপন।</b> ভোটের সাথে নাম, নম্বর বা অন্য কোনো পরিচয় জমা হয় না। শুধু মতামত গণনা হয়।</div>
+ <div id="box"><div class="empty">লোড হচ্ছে…</div></div>
+</div>
+<div class="foot">Create By Ocu Emon</div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+function bn(n){return String(n).replace(/\d/g,function(d){return"০১২৩৪৫৬৭৮৯".charAt(d)})}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var PAL=["#6b3fa0","#305496","#2f6b4f","#b42318","#c25a00","#374151"],TH=+ls("op-theme")||0;if(TH<0||TH>=PAL.length)TH=0;
+document.documentElement.style.setProperty("--ac",PAL[TH]);document.querySelector('meta[name="theme-color"]').content=PAL[TH];
+var SEC={goc:"জিওসি দরবার পয়েন্ট",cmd:"কমান্ডার দরবার পয়েন্ট",adh:"অধিনায়কের দরবার পয়েন্ট"};
+var sec=(location.search.match(/[?&]s=(goc|cmd|adh)\b/)||[])[1];
+if(!sec){location.replace("op-menu.html")}else{$("ttl").textContent=SEC[sec];document.title=SEC[sec]}
+var MN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"],WD=["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"];
+function fd(s){var a=String(s).split("-"),d=new Date(+a[0],a[1]-1,+a[2]);return bn(+a[2])+" "+MN[a[1]-1]+" "+bn(a[0])+" ("+WD[d.getDay()]+")"}
+function left(s){var a=s.split("-"),n=new Date(),k=Math.round((new Date(+a[0],a[1]-1,+a[2])-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5);return k==0?"আজই দরবার":k>0?"আর "+bn(k)+" দিন বাকি":bn(-k)+" দিন আগে হয়েছে"}
+/* এই ডিভাইসের এলোমেলো কোড (নাম/নম্বর নয়) — শুধু একই ডিভাইস থেকে বারবার ভোট ঠেকাতে */
+function dev(){var k="op-device",v=ls(k);if(!v||v.length<16){var a=new Uint8Array(16);try{crypto.getRandomValues(a)}catch(e){for(var i=0;i<16;i++)a[i]=Math.floor(Math.random()*256)}v=Array.prototype.map.call(a,function(x){return("0"+x.toString(16)).slice(-2)}).join("");ls(k,v)}return v}
+var DEV=dev(),db=null,polls=[],sel={};
+
+function isOpen(p){return p.open!==false&&p.endAt&&Date.now()<p.endAt.toMillis()}
+function load(){
+  $("box").innerHTML='<div class="empty">লোড হচ্ছে…</div>';
+  db.collection("polls").where("section","==",sec).get().then(function(sn){
+    polls=sn.docs.map(function(d){var o=d.data();o.id=d.id;return o});
+    polls.sort(function(a,b){return String(b.darbarDate).localeCompare(String(a.darbarDate))});
+    return Promise.all(polls.map(function(p){
+      return db.collection("votes").doc(p.id+"_"+DEV).get().then(function(d){p.voted=d.exists?d.data().o:null;if(d.exists)ls("op-v-"+p.id,String(d.data().o))}).catch(function(){var v=ls("op-v-"+p.id);p.voted=v==null?null:+v});
+    }));
+  }).then(render).catch(function(e){
+    $("box").innerHTML='<div class="empty">লোড করা যায়নি।'+(navigator.onLine?" পরে আবার চেষ্টা করুন।":" ইন্টারনেট চালু করুন।")+'</div>';
+  });
+}
+function render(){
+  if(!polls.length){$("box").innerHTML='<div class="empty">এই বিভাগে এখনো কোনো দরবার পয়েন্ট দেওয়া হয়নি।</div>';return}
+  $("box").innerHTML=polls.map(function(p){
+    var open=isOpen(p),voted=p.voted!=null&&p.voted!==undefined;
+    var h='<div class="poll" id="p-'+p.id+'"><span class="st '+(open?"on":"off")+'">'+(open?"● ভোট চলছে":"ভোট শেষ")+'</span><h3>'+esc(p.title)+'</h3>'+(p.desc?'<div class="desc">'+esc(p.desc)+'</div>':"")
+     +'<div class="meta"><span>🗓 দরবারের তারিখ: <b>'+fd(p.darbarDate)+'</b> · '+left(p.darbarDate)+'</span><span>⏳ ভোট চলবে: <b>'+fd(p.voteEnd||p.darbarDate)+'</b> পর্যন্ত</span></div>';
+    if(open&&!voted){
+      h+=p.options.map(function(o,i){return'<button class="opt" data-p="'+p.id+'" data-i="'+i+'"><i></i><span>'+esc(o)+'</span></button>'}).join("")
+       +'<textarea id="c-'+p.id+'" maxlength="300" placeholder="আপনার মন্তব্য (ঐচ্ছিক) — নাম বা পরিচয় লিখবেন না"></textarea>'
+       +'<button class="go" data-go="'+p.id+'">ভোট দিন</button><div class="msg" id="m-'+p.id+'"></div>';
+    }else{
+      h+=(voted?'<div class="msg" style="color:var(--ok);margin:0 0 4px">✓ আপনি ভোট দিয়েছেন</div>':"")+'<div class="bars" id="r-'+p.id+'"><div class="tot">ফলাফল লোড হচ্ছে…</div></div>';
+    }
+    return h+'</div>';
+  }).join("");
+  polls.forEach(function(p){if(!isOpen(p)||(p.voted!=null&&p.voted!==undefined))results(p)});
+}
+function results(p){
+  var el=$("r-"+p.id);if(!el)return;
+  db.collection("votes").where("p","==",p.id).get().then(function(sn){
+    var c=p.options.map(function(){return 0}),t=0;
+    sn.forEach(function(d){var o=d.data().o;if(c[o]!=null){c[o]++;t++}});
+    el.innerHTML=p.options.map(function(o,i){var pc=t?Math.round(c[i]*100/t):0;return'<div class="br'+(p.voted===i?" me":"")+'"><div class="t"><span>'+esc(o)+'</span><span>'+bn(c[i])+' ভোট · '+bn(pc)+'%</span></div><div class="tr"><div class="fl" style="width:'+pc+'%"></div></div></div>'}).join("")+'<div class="tot">মোট ভোট: '+bn(t)+'</div>';
+  }).catch(function(){el.innerHTML='<div class="tot">ফলাফল দেখা যায়নি'+(navigator.onLine?"":" — ইন্টারনেট চালু করুন")+'</div>'});
+}
+$("box").addEventListener("click",function(e){
+  var o=e.target.closest(".opt");
+  if(o){var pid=o.getAttribute("data-p");sel[pid]=+o.getAttribute("data-i");Array.prototype.forEach.call(document.querySelectorAll('#p-'+pid+' .opt'),function(b){b.classList.toggle("sel",b===o)});return}
+  var g=e.target.closest("[data-go]");
+  if(g)vote(g.getAttribute("data-go"),g);
+});
+function vote(pid,btn){
+  var p=polls.filter(function(x){return x.id==pid})[0],m=$("m-"+pid);
+  if(!p)return;
+  if(sel[pid]==null){m.style.color="var(--bad)";m.textContent="আগে একটি অপশন বেছে নিন";return}
+  if(!navigator.onLine){m.style.color="var(--bad)";m.textContent="ভোট দিতে ইন্টারনেট দরকার";return}
+  if(!confirm("ভোট দেওয়ার পর আর বদলানো যাবে না। নিশ্চিত?"))return;
+  btn.disabled=true;m.style.color="var(--mu)";m.textContent="পাঠানো হচ্ছে…";
+  var ts=firebase.firestore.FieldValue.serverTimestamp(),id=pid+"_"+DEV,cm=($("c-"+pid).value||"").trim().slice(0,300),b=db.batch();
+  b.set(db.collection("votes").doc(id),{p:pid,o:sel[pid],d:DEV,t:ts});
+  if(cm)b.set(db.collection("comments").doc(id),{p:pid,c:cm,t:ts});
+  var done=false,tm=setTimeout(function(){if(!done){btn.disabled=false;m.style.color="var(--bad)";m.textContent="ইন্টারনেট ধীর। আবার চেষ্টা করুন।"}},15000);
+  b.commit().then(function(){done=true;clearTimeout(tm);ls("op-v-"+pid,String(sel[pid]));p.voted=sel[pid];render()}).catch(function(e){
+    done=true;clearTimeout(tm);btn.disabled=false;m.style.color="var(--bad)";
+    m.textContent=(e&&e.code=="permission-denied")?"ভোট নেওয়া যায়নি। হয়তো আপনি আগেই ভোট দিয়েছেন বা ভোটের সময় শেষ।":"ভোট দেওয়া যায়নি। আবার চেষ্টা করুন।";
+  });
+}
+$("rf").onclick=function(){if(db)load()};
+if(sec)window.div29Ready.then(function(x){db=x.db;load()});
+</script>
+</body>
+</html>
