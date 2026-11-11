@@ -45,6 +45,17 @@ button{font:inherit;border-radius:10px;padding:12px;cursor:pointer}
 .p{flex:1;background:var(--ac);color:#fff;border:0;font-weight:600}
 .s{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
 .note{color:var(--mu);font-size:12px;margin-top:12px}
+.rem{background:var(--card);border:2px solid var(--ac);border-radius:12px;padding:10px 10px 4px;margin:8px 0 10px}
+.rem .rh{font-weight:800;font-size:15px;margin:0 2px 8px}.rem .rh small{font-weight:600;color:var(--mu);font-size:12px}
+.ri{border-top:1px dashed var(--bd);padding:9px 2px}
+.ri .rt{font-size:15px}.ri .rt b{font-weight:800}.ri .rt span{color:var(--mu);font-size:13px;margin-left:6px}
+.ri .rt .tg{background:var(--ac2);color:var(--ac);border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700}
+.ri .rs{font-size:14px;font-weight:700;margin:3px 0 7px}
+.ri.w .rs{color:#c25a00}.ri.t .rs{color:#b42318}.ri.o .rs{color:#7a1b13}
+.ra{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ra input{flex:1 1 130px;min-width:0;border:1px solid var(--bd);border-radius:8px;padding:9px;font:inherit;font-size:14px;background:var(--card);color:var(--tx)}
+.ra a.sb,.ra button{border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
+.ra a.sb{background:var(--ac);color:#fff;border-color:var(--ac)}
 .fs{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:var(--bg);display:none;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 .fs.on{display:flex}
 .fs .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-weight:700}
@@ -59,9 +70,11 @@ button{font:inherit;border-radius:10px;padding:12px;cursor:pointer}
 <div class="org">২৯ ডিভ লোকেটিং ব্যাটারী আর্টিলারি</div>
 <div class="ctl" id="ctl"><select id="ty" aria-label="ধরন"></select></div>
 <div class="sub">ঘরে ট্যাপ করে লিখুন · তারিখে ট্যাপ করে তারিখ বেছে নিন · পদবী লিখতে শুরু করলে পরামর্শ আসবে</div>
+<div class="rem" id="rem" style="display:none"></div>
 <div class="wrap"><table id="tb"></table></div>
 <datalist id="ranks"><option value="সৈনিক"><option value="ল্যান্স কর্পোরাল"><option value="কর্পোরাল"><option value="সার্জেন্ট"><option value="ওয়ারেন্ট অফিসার"><option value="সিনিয়র ওয়ারেন্ট অফিসার"><option value="মাস্টার ওয়ারেন্ট অফিসার"><option value="অনারারি লেফটেন্যান্ট"><option value="অনারারি ক্যাপ্টেন"></datalist>
-<div class="btns"><button class="p" id="add">+ সারি যোগ</button><button class="s" id="pvb">প্রিভিউ</button><button class="s" id="pdf">PDF</button><button class="s" id="rst">রিসেট</button></div>
+<div class="btns"><button class="p" id="add">+ সারি যোগ</button><button class="s" id="pvb">প্রিভিউ</button><button class="s" id="pdf">PDF</button><button class="s" id="ics">📅 রিমাইন্ডার</button><button class="s" id="rst">রিসেট</button></div>
+<div class="note" id="remnote" style="display:none">⏰ ছুটি শেষের ২ দিন আগে থেকে ওপরে রিমাইন্ডার দেখাবে। 📅 রিমাইন্ডার চাপলে ফোনের ক্যালেন্ডারে যোগ হবে এবং ২ দিন আগে সকাল ৯টায় নোটিফিকেশন আসবে (নতুন তারিখ দিলে আবার চাপুন)। মোবাইল নম্বর শুধু SMS পাঠানোর জন্য, শীটে আসে না।</div>
 <div class="note">ডাটা শুধু এই ফোনের ব্রাউজারে সেভ হয় এবং লগইন থাকলে ক্লাউডেও সিঙ্ক হয়। রিসেট শুধু এখন খোলা তালিকার সারিগুলো মুছে।</div>
 <div class="foot">Create by Ocu Emon</div>
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
@@ -97,7 +110,7 @@ function toBn(s){return String(s).replace(/[0-9]/g,function(d){return BD.charAt(
 function dmy(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");return m?toBn(m[3]+"/"+m[2]+"/"+m[1]):""}
 function tlab(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i][0]===k)return TYPES[i][1];return""}
 var KEY="tr-"+sec+"-"+kind,S=null;
-function nrow(p){var r={no:"",rank:"",name:"",go:"",jn:"",cm:""};if(p)for(var k in p)r[k]=p[k];return r}
+function nrow(p){var r={no:"",rank:"",name:"",go:"",jn:"",cm:"",ph:"",dn:""};if(p)for(var k in p)r[k]=p[k];return r}
 function fresh(){var o={type:TYPES[0][0],t:{}};TYPES.forEach(function(t){o.t[t[0]]={rows:[]}});return o}
 function load(){var o=null;try{o=JSON.parse(localStorage.getItem(KEY))}catch(x){}
  if(Array.isArray(o)){var f=fresh();o.forEach(function(r){var n=nrow({name:r&&r.n||""});if(kind!=="leave"&&r&&r.v&&r.v[0])n.cm=String(r.v[0]);f.t[TYPES[0][0]].rows.push(n)});return f}
@@ -118,6 +131,50 @@ tySel.innerHTML=TYPES.map(function(t){return'<option value="'+t[0]+'">'+t[1]+'</
 tySel.value=S.type;
 tySel.onchange=function(){S.type=this.value;save();build()};
 
+/* ---------- ছুটি শেষের রিমাইন্ডার ---------- */
+var REM=2;
+function esc(t){return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
+function todayMid(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function daysTo(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");if(!m)return null;return Math.round((new Date(+m[1],+m[2]-1,+m[3])-todayMid())/864e5)}
+function nameOf(r){return((r.rank?r.rank+" ":"")+(r.name||"")).trim()||"সদস্য"}
+function dueList(){var o=[];TYPES.forEach(function(t){S.t[t[0]].rows.forEach(function(r){var d=daysTo(r.jn);if(d!==null&&!r.dn&&d<=REM)o.push({r:r,d:d,t:t})})});o.sort(function(a,b){return a.d-b.d});return o}
+function smsText(it){var d=it.d,j=dmy(it.r.jn),b=nameOf(it.r)+", ";
+ if(d>0)b+="আপনার ছুটি "+toBn(d)+" দিন পরে ("+j+") শেষ হবে। যথাসময়ে যোগদান করুন।";
+ else if(d===0)b+="আপনার ছুটি আজ ("+j+") শেষ। আজই যোগদান করুন।";
+ else b+="আপনার ছুটির মেয়াদ ("+j+") শেষ হয়েছে। দ্রুত যোগদান করুন।";
+ return b+" — "+ORG}
+function smsHref(it){return"sms:"+String(it.r.ph||"").replace(/\s+/g,"")+"?&body="+encodeURIComponent(smsText(it))}
+function renderRem(){
+ var el=document.getElementById("rem");if(kind!=="leave"){el.style.display="none";return}
+ var L=dueList();window._RL=L;
+ if(!L.length){el.style.display="none";return}
+ el.style.display="";
+ el.innerHTML='<div class="rh">⏰ ছুটি শেষের রিমাইন্ডার <small>(যোগদানের '+toBn(REM)+' দিন আগে থেকে)</small></div>'+L.map(function(it,i){
+  var d=it.d,cls=d>0?"w":d===0?"t":"o",msg=d>0?"আর "+toBn(d)+" দিন বাকি · যোগদান: "+dmy(it.r.jn):d===0?"আজ যোগদানের দিন · "+dmy(it.r.jn):"মেয়াদ শেষ — "+toBn(-d)+" দিন আগে ("+dmy(it.r.jn)+")";
+  return'<div class="ri '+cls+'"><div class="rt"><b>'+esc(it.r.name||"—")+'</b><span>'+esc(it.r.rank||"")+(it.r.no?" · "+esc(it.r.no):"")+'</span> <span class="tg">'+it.t[1]+'</span></div><div class="rs">'+msg+'</div>'
+   +'<div class="ra"><input type="tel" inputmode="tel" data-ph="'+i+'" placeholder="মোবাইল নম্বর (SMS এর জন্য)" value="'+esc(it.r.ph||"")+'"><a class="sb" data-sms="'+i+'" href="'+smsHref(it)+'">✉ SMS</a><button data-dn="'+i+'">যোগদান করেছে ✓</button></div></div>'}).join("")+'<div style="height:4px"></div>';
+ el.querySelectorAll("input[data-ph]").forEach(function(inp){inp.oninput=function(){var it=L[+this.dataset.ph];it.r.ph=this.value;save();el.querySelector('a[data-sms="'+this.dataset.ph+'"]').href=smsHref(it)}});
+ el.querySelectorAll("button[data-dn]").forEach(function(b){b.onclick=function(){var it=L[+this.dataset.dn];if(confirm(nameOf(it.r)+" যোগদান করেছেন? রিমাইন্ডার থেকে সরানো হবে।")){it.r.dn="1";save();renderRem()}}})}
+function p2(n){return(n<10?"0":"")+n}
+function utc(dt){return dt.getUTCFullYear()+p2(dt.getUTCMonth()+1)+p2(dt.getUTCDate())+"T"+p2(dt.getUTCHours())+p2(dt.getUTCMinutes())+p2(dt.getUTCSeconds())+"Z"}
+function ymd(y,m,d){var dt=new Date(Date.UTC(y,m-1,d));return dt.getUTCFullYear()+p2(dt.getUTCMonth()+1)+p2(dt.getUTCDate())}
+function ie(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n")}
+function makeIcs(){
+ var ev=[],stamp=utc(new Date()),n=0;
+ TYPES.forEach(function(t){S.t[t[0]].rows.forEach(function(r,i){
+  var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(r.jn||"");if(!m||r.dn)return;
+  var dd=daysTo(r.jn);if(dd<0)return;
+  var y=+m[1],mo=+m[2],d=+m[3],nm=nameOf(r),uid=sec+"-"+t[0]+"-"+(r.no||r.name||i)+"-"+r.jn,desc=nm+" · "+t[1]+" · "+SECN[sec]+" সেকশন · যোগদানের তারিখ "+dmy(r.jn);
+  if(dd>=REM){var a=new Date(Date.UTC(y,mo-1,d-REM,3,0,0)),b=new Date(a.getTime()+30*60000);
+   ev.push(["BEGIN:VEVENT","UID:"+uid+"-a@div29","DTSTAMP:"+stamp,"DTSTART:"+utc(a),"DTEND:"+utc(b),"SUMMARY:"+ie("⏰ "+toBn(REM)+" দিন পরে ছুটি শেষ — "+nm),"DESCRIPTION:"+ie(desc),"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ie(nm+" এর ছুটি "+toBn(REM)+" দিন পরে শেষ"),"TRIGGER:-PT0M","END:VALARM","END:VEVENT"].join("\r\n"));n++}
+  ev.push(["BEGIN:VEVENT","UID:"+uid+"-b@div29","DTSTAMP:"+stamp,"DTSTART;VALUE=DATE:"+ymd(y,mo,d),"DTEND;VALUE=DATE:"+ymd(y,mo,d+1),"SUMMARY:"+ie("যোগদানের তারিখ — "+nm),"DESCRIPTION:"+ie(desc),"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+ie(nm+" আজ যোগদান করবেন"),"TRIGGER:PT9H","END:VALARM","END:VEVENT"].join("\r\n"));n++})});
+ if(!n)return null;
+ return"BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//29 Div//Leave Reminder//BN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n"+ev.join("\r\n")+"\r\nEND:VCALENDAR\r\n"}
+document.getElementById("ics").style.display=kind==="leave"?"":"none";
+document.getElementById("remnote").style.display=kind==="leave"?"":"none";
+document.getElementById("ics").onclick=function(){var s=makeIcs();if(!s){alert("রিমাইন্ডারের জন্য কোনো যোগদানের তারিখ (আজ বা ভবিষ্যতের) নেই। আগে \"যোগদানের তারিখ\" দিন।");return}
+ try{var u=URL.createObjectURL(new Blob([s],{type:"text/calendar;charset=utf-8"})),a=document.createElement("a");a.href=u;a.download="leave-reminder-"+sec+".ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("ফাইল তৈরি হয়নি।")}};
+
 function build(){
  var h='<tr>'+COLS.map(function(c){return'<th>'+c+'</th>'}).join("")+'<th></th></tr>',R=rows();
  R.forEach(function(r,i){
@@ -127,7 +184,8 @@ function build(){
   h+='<td class="x"><button data-d="'+i+'" aria-label="সারি মুছুন">×</button></td></tr>'});
  if(!R.length)h+='<tr><td colspan="'+(K.cols.length+2)+'" class="emp">কোনো সারি নেই। নিচে "+ সারি যোগ" চাপুন।</td></tr>';
  T.innerHTML=h;
- T.querySelectorAll("input[data-f]").forEach(function(inp){var r=R[+inp.dataset.i],f=inp.dataset.f;inp.value=r[f]||"";inp.oninput=function(){r[f]=this.value;save()};inp.onchange=function(){r[f]=this.value;save()}});
+ T.querySelectorAll("input[data-f]").forEach(function(inp){var r=R[+inp.dataset.i],f=inp.dataset.f;inp.value=r[f]||"";inp.oninput=function(){r[f]=this.value;save()};inp.onchange=function(){r[f]=this.value;save();if(f==="jn")renderRem()}});
+ renderRem();
  T.querySelectorAll("button[data-d]").forEach(function(b){b.onclick=function(){var i=+this.dataset.d,r=R[i],nm=r.name||("সারি "+toBn(i+1));if(confirm("\""+nm+"\" সারিটা মুছবেন?")){R.splice(i,1);save();build()}}});
 }
 document.getElementById("add").onclick=function(){rows().push(nrow());save();build();var w=document.querySelector(".wrap");w.scrollTop=99999;var ins=T.querySelectorAll("tr:last-child input");if(ins[0])ins[0].focus()};

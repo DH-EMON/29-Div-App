@@ -38,6 +38,11 @@ header{background:linear-gradient(160deg,var(--ac),#0d1b6b);color:#fff;padding:c
 .tile{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:14px;text-decoration:none;color:var(--tx);box-shadow:0 4px 18px rgba(13,27,107,.08);min-height:122px;justify-content:center}
 .tile b{font-size:18px}
 .tile small{font-size:12.5px;color:var(--mu);font-weight:600;margin-top:-6px}
+.rbox{background:var(--card);border:2px solid var(--ac);border-radius:18px;padding:12px 14px;box-shadow:0 4px 18px rgba(13,27,107,.08)}
+.rhd{font-weight:800;font-size:16px;margin-bottom:4px}.rhd small{color:var(--mu);font-weight:600;font-size:13px;margin-left:6px}
+.ritem{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--ln);text-decoration:none;color:var(--tx);font-size:15.5px}
+.ritem span{font-size:13px;font-weight:700;text-align:right}.ritem.w span{color:#c25a00}.ritem.t span{color:#b42318}.ritem.o span{color:#7a1b13}
+.rbox .more{font-size:13px;color:var(--mu);padding-top:8px;border-top:1px dashed var(--ln)}
 h2{font-size:13px;color:var(--mu);letter-spacing:.06em;margin:24px 4px 10px;font-weight:800}
 .card{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:16px}
 #sw{display:flex;gap:14px;justify-content:center}
@@ -110,10 +115,15 @@ function head(t,s,backHash){
   $("pal").innerHTML="";
 }
 
+function daysTo(iso){var q=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");if(!q)return null;var n=new Date();return Math.round((new Date(+q[1],+q[2]-1,+q[3])-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/864e5)}
+function dueAll(){var o=[];SUBS.forEach(function(s){var v=null;try{v=JSON.parse(localStorage.getItem(key(s.id,"leave")))}catch(e){}if(!v||!v.t)return;for(var t in v.t)(v.t[t].rows||[]).forEach(function(r){var d=daysTo(r.jn);if(d!==null&&!r.dn&&d<=2)o.push({s:s,r:r,d:d})})});o.sort(function(a,b){return a.d-b.d});return o}
+function remBox(){var L=dueAll();if(!L.length)return"";var h='<div class="rbox"><div class="rhd">⏰ ছুটি শেষের রিমাইন্ডার <small>'+bn(L.length)+' জন</small></div>';
+ L.slice(0,6).forEach(function(x){var d=x.d,t=d>0?"আর "+bn(d)+" দিন":d===0?"আজই যোগদান":"মেয়াদ শেষ "+bn(-d)+" দিন";h+='<a class="ritem '+(d>0?"w":d===0?"t":"o")+'" href="tr-sheet.html?s='+x.s.id+'&k=leave"><b>'+esc(x.r.name||"—")+'</b><span>'+x.s.n+' · '+t+'</span></a>'});
+ if(L.length>6)h+='<div class="more">আরও '+bn(L.length-6)+' জন…</div>';return h+'</div>'}
 function home(){
   head("ট্রুপস / সেকশন","সেকশন বাছাই করুন",null);
   view.className="list";
-  view.innerHTML='<div class="grid">'+SUBS.map(function(s){
+  view.innerHTML=remBox()+'<div class="grid">'+SUBS.map(function(s){
     var t=0;Object.keys(KINDS).forEach(function(k){t+=cnt(s.id,k)});
     return'<a class="tile" href="#'+s.id+'"><div class="ic">'+svg(s.i)+'</div><b>'+s.n+'</b><small>'+(t?bn(t)+" জন তালিকাভুক্ত":"তালিকা খালি")+'</small></a>'}).join("")+'</div>';
   $("pal").innerHTML='<h2>রঙ বেছে নিন</h2><div class="card" id="sw"></div>';drawSw();
