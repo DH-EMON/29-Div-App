@@ -1,7 +1,7 @@
 /* 29 Div — অফলাইন ও দ্রুত লোডের জন্য Service Worker
    নতুন ফাইল আপলোড করলে নিচের VERSION এর সংখ্যা বাড়িয়ে দিন (যেমন v2, v3) */
-var VERSION="v5",CACHE="div29-"+VERSION;
-var PAGES=["./","index.html","jco-hisab.html","jco-menu.html","jq-jonobol.html","jq-masala.html","jq-menu.html","jq-mess.html","jq-ration.html","jq-rr.html","sm-daily.html","sm-fresh.html","sm-manpower.html","sm-menu.html","op-menu.html","op-poll.html","opadmin-manage.html","cloud.js","manifest.json","favicon-48.png","icon-192.png","icon-512.png","icon-maskable-512.png","apple-touch-icon.png"];
+var VERSION="v7",CACHE="div29-"+VERSION;
+var PAGES=["./","index.html","jco-hisab.html","jco-menu.html","jq-jonobol.html","jq-masala.html","jq-menu.html","jq-mess.html","jq-ration.html","jq-rr.html","sm-daily.html","sm-fresh.html","sm-manpower.html","sm-menu.html","tr-menu.html","tr-sheet.html","op-menu.html","op-poll.html","opadmin-manage.html","cloud.js","manifest.json","favicon-48.png","icon-192.png","icon-512.png","icon-maskable-512.png","apple-touch-icon.png"];
 var SDK=["app","auth","firestore"].map(function(n){return "https://www.gstatic.com/firebasejs/10.12.2/firebase-"+n+"-compat.js"});
 
 self.addEventListener("install",function(e){
