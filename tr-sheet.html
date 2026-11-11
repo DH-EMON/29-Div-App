@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ছুটির নামীয় তালিকা</title>
+<title>নামীয় তালিকা</title>
 <meta name="theme-color" content="#c25a00">
 <meta name="apple-mobile-web-app-title" content="29 Div locating Battery Artillery">
 <link rel="manifest" href="manifest.json">
@@ -55,14 +55,14 @@ button{font:inherit;border-radius:10px;padding:12px;cursor:pointer}
 </head>
 <body>
 <a class="back" id="bk" href="tr-menu.html">← সেকশন</a><span class="tag" id="tag"></span>
-<h1>ছুটির নামীয় তালিকা</h1>
+<h1 id="h1">নামীয় তালিকা</h1>
 <div class="org">২৯ ডিভ লোকেটিং ব্যাটারী আর্টিলারি</div>
-<div class="ctl"><select id="ty" aria-label="ছুটির ধরন"></select></div>
+<div class="ctl" id="ctl"><select id="ty" aria-label="ধরন"></select></div>
 <div class="sub">ঘরে ট্যাপ করে লিখুন · তারিখে ট্যাপ করে তারিখ বেছে নিন · পদবী লিখতে শুরু করলে পরামর্শ আসবে</div>
 <div class="wrap"><table id="tb"></table></div>
 <datalist id="ranks"><option value="সৈনিক"><option value="ল্যান্স কর্পোরাল"><option value="কর্পোরাল"><option value="সার্জেন্ট"><option value="ওয়ারেন্ট অফিসার"><option value="সিনিয়র ওয়ারেন্ট অফিসার"><option value="মাস্টার ওয়ারেন্ট অফিসার"><option value="অনারারি লেফটেন্যান্ট"><option value="অনারারি ক্যাপ্টেন"></datalist>
 <div class="btns"><button class="p" id="add">+ সারি যোগ</button><button class="s" id="pvb">প্রিভিউ</button><button class="s" id="pdf">PDF</button><button class="s" id="rst">রিসেট</button></div>
-<div class="note">ডাটা শুধু এই ফোনের ব্রাউজারে সেভ হয় এবং লগইন থাকলে ক্লাউডেও সিঙ্ক হয়। রিসেট শুধু এখন খোলা ধরনের (C/L বা P/L) সারিগুলো মুছে।</div>
+<div class="note">ডাটা শুধু এই ফোনের ব্রাউজারে সেভ হয় এবং লগইন থাকলে ক্লাউডেও সিঙ্ক হয়। রিসেট শুধু এখন খোলা তালিকার সারিগুলো মুছে।</div>
 <div class="foot">Create by Ocu Emon</div>
 <div class="fs" id="fs"><div class="bar"><span>PDF প্রিভিউ</span><button class="s" id="fsx">বন্ধ ×</button></div><div class="body" id="fsb"></div></div>
 <script>
@@ -71,31 +71,49 @@ var PL="#ffffff";
 try{var th=+localStorage.getItem("tr-theme")||0;if(th>=0&&th<PAL.length){var rs0=document.documentElement.style;rs0.setProperty("--ac",PAL[th][0]);rs0.setProperty("--ac2",PAL[th][1]);document.querySelector('meta[name="theme-color"]').content=PAL[th][0]}}catch(x){}
 var SECN={survey:"সার্ভে",sr:"এসআর",radar:"রাডার",met:"মেট",ocu:"ওসিইউ",mt:"এমটি"};
 var sec=(location.search.match(/[?&]s=(survey|sr|radar|met|ocu|mt)\b/)||[])[1];
+var kind=(location.search.match(/[?&]k=(leave|team|camp|games)\b/)||[])[1]||"leave";
 if(!sec){location.replace("tr-menu.html")}
 var ORG="২৯ ডিভ লোকেটিং ব্যাটারী আর্টিলারি";
-var TYPES=[["cl","C/L ছুটি"],["pl","P/L ছুটি"]];
-var COLS=["ক্রম","সেনা নং","পদবী","নাম","গমনের তারিখ","যোগদানের তারিখ","মন্তব্য"];
+/* কলামের সংজ্ঞা — নতুন টেবিল যোগ করতে শুধু এই দুটো তালিকা বদলালেই হয় */
+var C={
+ no:{h:"সেনা নং",w:104,min:110,red:1,bold:1,al:"c"},
+ rank:{h:"পদবী",w:150,min:150,al:"c",list:1},
+ name:{h:"নাম",w:210,min:190,al:"l"},
+ go:{h:"গমনের তারিখ",w:128,min:150,red:1,al:"c",date:1},
+ jn:{h:"যোগদানের তারিখ",w:128,min:150,red:1,al:"c",date:1},
+ cm:{h:"মন্তব্য",w:190,min:200,al:"l"}
+};
+var KINDS={
+ leave:{n:"ছুটি",title:"ছুটির নামীয় তালিকা",types:[["cl","C/L ছুটি"],["pl","P/L ছুটি"]],cols:["no","rank","name","go","jn","cm"]},
+ team:{n:"দলগত",title:"দলগত নামীয় তালিকা",types:[["x",""]],cols:["no","rank","name","cm"]},
+ camp:{n:"ক্যাম্প",title:"ক্যাম্প নামীয় তালিকা",types:[["x",""]],cols:["no","rank","name","cm"]},
+ games:{n:"গেমস/কম্পিটিশন",title:"গেমস/কম্পিটিশন নামীয় তালিকা",types:[["x",""]],cols:["no","rank","name","cm"]}
+};
+var K=KINDS[kind],TYPES=K.types,HAS_T=TYPES.length>1;
+var COLS=["ক্রম"].concat(K.cols.map(function(c){return C[c].h}));
 var MN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
 var BD="০১২৩৪৫৬৭৮৯";
 function toBn(s){return String(s).replace(/[0-9]/g,function(d){return BD.charAt(+d)})}
-function esc(t){return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}
 function dmy(iso){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");return m?toBn(m[3]+"/"+m[2]+"/"+m[1]):""}
-function tlab(k){return TYPES.filter(function(t){return t[0]===k})[0][1]}
-var KEY="tr-"+sec+"-leave",S=null;
+function tlab(k){for(var i=0;i<TYPES.length;i++)if(TYPES[i][0]===k)return TYPES[i][1];return""}
+var KEY="tr-"+sec+"-"+kind,S=null;
 function nrow(p){var r={no:"",rank:"",name:"",go:"",jn:"",cm:""};if(p)for(var k in p)r[k]=p[k];return r}
-function fresh(){return{type:"cl",t:{cl:{rows:[]},pl:{rows:[]}},sig:{}}}
+function fresh(){var o={type:TYPES[0][0],t:{}};TYPES.forEach(function(t){o.t[t[0]]={rows:[]}});return o}
 function load(){var o=null;try{o=JSON.parse(localStorage.getItem(KEY))}catch(x){}
-if(Array.isArray(o)){var f=fresh();o.forEach(function(r){f.t.cl.rows.push(nrow({name:r&&r.n||""}))});return f}
-if(!o||!o.t||!o.t.cl||!o.t.pl)return fresh();
-if(!o.sig)o.sig={};if(o.type!=="cl"&&o.type!=="pl")o.type="cl";return o}
+ if(Array.isArray(o)){var f=fresh();o.forEach(function(r){var n=nrow({name:r&&r.n||""});if(kind!=="leave"&&r&&r.v&&r.v[0])n.cm=String(r.v[0]);f.t[TYPES[0][0]].rows.push(n)});return f}
+ if(!o||!o.t)return fresh();
+ TYPES.forEach(function(t){if(!o.t[t[0]]||!Array.isArray(o.t[t[0]].rows))o.t[t[0]]={rows:[]}});
+ if(!tlab(o.type)&&HAS_T)o.type=TYPES[0][0];if(!HAS_T)o.type=TYPES[0][0];return o}
 S=load();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
 function rows(){return S.t[S.type].rows}
 
 document.getElementById("tag").textContent="· "+SECN[sec]+" সেকশন";
 document.getElementById("bk").href="tr-menu.html#"+sec;
-document.title="ছুটির নামীয় তালিকা · "+SECN[sec];
+document.getElementById("h1").textContent=K.title;
+document.title=K.title+" · "+SECN[sec];
 var tySel=document.getElementById("ty"),T=document.getElementById("tb");
+document.getElementById("ctl").style.display=HAS_T?"":"none";
 tySel.innerHTML=TYPES.map(function(t){return'<option value="'+t[0]+'">'+t[1]+'</option>'}).join("");
 tySel.value=S.type;
 tySel.onchange=function(){S.type=this.value;save();build()};
@@ -103,29 +121,26 @@ tySel.onchange=function(){S.type=this.value;save();build()};
 function build(){
  var h='<tr>'+COLS.map(function(c){return'<th>'+c+'</th>'}).join("")+'<th></th></tr>',R=rows();
  R.forEach(function(r,i){
-  h+='<tr><td class="sl">'+toBn(i+1)+'</td>'
-   +'<td><input class="r" data-i="'+i+'" data-f="no" style="min-width:110px" inputmode="text" aria-label="সেনা নং"></td>'
-   +'<td><input list="ranks" data-i="'+i+'" data-f="rank" style="min-width:150px" aria-label="পদবী"></td>'
-   +'<td><input class="l" data-i="'+i+'" data-f="name" style="min-width:190px" aria-label="নাম"></td>'
-   +'<td><input type="date" class="r" data-i="'+i+'" data-f="go" style="min-width:150px" aria-label="গমনের তারিখ"></td>'
-   +'<td><input type="date" class="r" data-i="'+i+'" data-f="jn" style="min-width:150px" aria-label="যোগদানের তারিখ"></td>'
-   +'<td><input class="l" data-i="'+i+'" data-f="cm" style="min-width:200px" aria-label="মন্তব্য"></td>'
-   +'<td class="x"><button data-d="'+i+'" aria-label="সারি মুছুন">×</button></td></tr>'});
- if(!R.length)h+='<tr><td colspan="8" class="emp">কোনো সারি নেই। নিচে "+ সারি যোগ" চাপুন।</td></tr>';
+  h+='<tr><td class="sl">'+toBn(i+1)+'</td>';
+  K.cols.forEach(function(c){var d=C[c];
+   h+='<td><input '+(d.date?'type="date" ':'')+(d.list?'list="ranks" ':'')+'class="'+(d.red?'r ':'')+(d.al==="l"?'l':'')+'" data-i="'+i+'" data-f="'+c+'" style="min-width:'+d.min+'px" aria-label="'+d.h+'"></td>'});
+  h+='<td class="x"><button data-d="'+i+'" aria-label="সারি মুছুন">×</button></td></tr>'});
+ if(!R.length)h+='<tr><td colspan="'+(K.cols.length+2)+'" class="emp">কোনো সারি নেই। নিচে "+ সারি যোগ" চাপুন।</td></tr>';
  T.innerHTML=h;
  T.querySelectorAll("input[data-f]").forEach(function(inp){var r=R[+inp.dataset.i],f=inp.dataset.f;inp.value=r[f]||"";inp.oninput=function(){r[f]=this.value;save()};inp.onchange=function(){r[f]=this.value;save()}});
  T.querySelectorAll("button[data-d]").forEach(function(b){b.onclick=function(){var i=+this.dataset.d,r=R[i],nm=r.name||("সারি "+toBn(i+1));if(confirm("\""+nm+"\" সারিটা মুছবেন?")){R.splice(i,1);save();build()}}});
 }
-
-
 document.getElementById("add").onclick=function(){rows().push(nrow());save();build();var w=document.querySelector(".wrap");w.scrollTop=99999;var ins=T.querySelectorAll("tr:last-child input");if(ins[0])ins[0].focus()};
-document.getElementById("rst").onclick=function(){if(confirm(tlab(S.type)+" এর সব সারি মুছে ফেলবেন?")){S.t[S.type].rows=[];save();build()}};
+document.getElementById("rst").onclick=function(){if(confirm((HAS_T?tlab(S.type)+" এর":"এই তালিকার")+" সব সারি মুছে ফেলবেন?")){S.t[S.type].rows=[];save();build()}};
 
 /* ---------- শীট আঁকা (প্রিভিউ ও PDF) ---------- */
-var RED="#c0201a",BLK="#111",CWS=[54,104,150,210,128,128,190],PER=25,MINR=10;
+var RED="#c0201a",BLK="#111",PER=25,MINR=10,TOTW=964;
+var RAW=[54].concat(K.cols.map(function(c){return C[c].w})),RS=0;RAW.forEach(function(w){RS+=w});
+var CWS=RAW.map(function(w){return Math.round(w*TOTW/RS)});
+function cell(r,c){var v=r[c];return C[c].date?dmy(v):(v||"")}
 function drawPage(type,ch,pi,np,off){
  var sc=2,pad=16,rh=34,hh=44,W=pad*2,i;for(i=0;i<CWS.length;i++)W+=CWS[i];
- var first=pi===0,last=pi===np-1,top=first?112:46,sg=0,H=pad*2+top+hh+ch.length*rh+sg+34;
+ var first=pi===0,top=first?(HAS_T?112:84):46,H=pad*2+top+hh+ch.length*rh+34;
  var cv=document.createElement("canvas");cv.width=W*sc;cv.height=H*sc;
  var x=cv.getContext("2d");x.scale(sc,sc);x.fillStyle="#fff";x.fillRect(0,0,W,H);x.textBaseline="middle";
  var FF='"Noto Sans Bengali","Nirmala UI","Segoe UI",system-ui,Arial,sans-serif';
@@ -133,18 +148,19 @@ function drawPage(type,ch,pi,np,off){
  function box(a,b,w,h,fill){if(fill){x.fillStyle=fill;x.fillRect(a,b,w,h)}x.strokeStyle="#777";x.lineWidth=1;x.strokeRect(a,b,w,h)}
  function txt(t,cx,cy,w,col,bold,sz,al){if(t==null||t==="")return;x.fillStyle=col;x.textAlign=al||"center";fit(t,w-10,sz||14,bold);x.fillText(t,al==="left"?cx+6:cx,cy)}
  x.textAlign="center";x.fillStyle=BLK;
- if(first){x.font="bold 20px "+FF;x.fillText("ছুটির নামীয় তালিকা",W/2,pad+16);x.font="bold 15px "+FF;x.fillText(ORG+" · "+SECN[sec]+" সেকশন",W/2,pad+44);x.font="bold 16px "+FF;x.fillText(tlab(type),W/2,pad+74)}
- else{x.font="bold 15px "+FF;x.fillText("ছুটির নামীয় তালিকা · "+tlab(type)+" · পেজ "+toBn(pi+1),W/2,pad+20)}
+ if(first){x.font="bold 20px "+FF;x.fillText(K.title,W/2,pad+16);x.font="bold 15px "+FF;x.fillText(ORG+" · "+SECN[sec]+" সেকশন",W/2,pad+44);if(HAS_T){x.font="bold 16px "+FF;x.fillText(tlab(type),W/2,pad+74)}}
+ else{x.font="bold 15px "+FF;x.fillText(K.title+(HAS_T?" · "+tlab(type):"")+" · পেজ "+toBn(pi+1),W/2,pad+20)}
  var y=pad+top,xx=pad;
  COLS.forEach(function(c,k){box(xx,y,CWS[k],hh,PL);txt(c,xx+CWS[k]/2,y+hh/2,CWS[k],BLK,true,14);xx+=CWS[k]});
  y+=hh;
  ch.forEach(function(r,idx){
-  xx=pad;var vals=r?[toBn(off+idx+1),r.no,r.rank,r.name,dmy(r.go),dmy(r.jn),r.cm]:["","","","","","",""];
-  vals.forEach(function(v,k){box(xx,y,CWS[k],rh,null);
-   var col=(k===1||k===4||k===5)?RED:BLK,al=(k===3||k===6)?"left":"center",bold=(k===0||k===1);
-   txt(v,al==="left"?xx:xx+CWS[k]/2,y+rh/2,CWS[k],col,bold,14,al);xx+=CWS[k]});
+  xx=pad;
+  for(var k=0;k<CWS.length;k++){box(xx,y,CWS[k],rh,null);
+   var v="",col=BLK,al="center",bold=false;
+   if(k===0){v=r?toBn(off+idx+1):"";bold=true}
+   else{var cn=K.cols[k-1],d=C[cn];v=r?cell(r,cn):"";col=d.red?RED:BLK;al=d.al==="l"?"left":"center";bold=!!d.bold}
+   txt(v,al==="left"?xx:xx+CWS[k]/2,y+rh/2,CWS[k],col,bold,14,al);xx+=CWS[k]}
   y+=rh});
-
  x.fillStyle="#555";x.textAlign="right";x.font="11px "+FF;x.fillText("Create by Ocu Emon",W-6,H-5);
  return cv}
 function allCanvases(){
@@ -175,12 +191,12 @@ function closeFs(){document.getElementById("fs").className="fs"}
 document.getElementById("pvb").onclick=openFs;
 document.getElementById("fsx").onclick=closeFs;
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeFs()});
-document.getElementById("pdf").onclick=function(){try{var bl=pdfFrom(allCanvases()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="leave-"+sec+"-"+S.type+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("PDF বানানো যায়নি।")}};
+document.getElementById("pdf").onclick=function(){try{var bl=pdfFrom(allCanvases()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=kind+"-"+sec+(HAS_T?"-"+S.type:"")+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("PDF বানানো যায়নি।")}};
 build();
 /* ---------- রেকর্ড (সেভ / খুলুন) ---------- */
 window.recFresh=function(){return fresh()};
 window.recNew=function(){var o=fresh();o.type=S.type;return o};
-window.recName=function(){var d=new Date();return tlab(S.type)+" · "+MN[d.getMonth()]+" "+toBn(d.getFullYear())};
+window.recName=function(){var d=new Date();return (HAS_T?tlab(S.type):K.n)+" · "+MN[d.getMonth()]+" "+toBn(d.getFullYear())};
 window.recReload=function(){tySel.value=S.type;build()};
 ;(function(){
 var RK=KEY+"-rec",BK=RK+"-blank";
@@ -255,15 +271,17 @@ lab();
 })();
 
 /* ---------- এক্সেল শীট ---------- */
-window.xlName="leave-"+sec;
+window.xlName=kind+"-"+sec;
 window.xlSheets=function(){var out=[],H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A";
  TYPES.forEach(function(t){var R=S.t[t[0]].rows,rows=[];
-  rows.push([{v:"ছুটির নামীয় তালিকা",s:{b:1,nb:1}}]);
+  rows.push([{v:K.title,s:{b:1,nb:1}}]);
   rows.push([{v:ORG+" · "+SECN[sec]+" সেকশন",s:{b:1,nb:1}}]);
-  rows.push([{v:t[1],s:{b:1,nb:1}}]);
+  if(HAS_T)rows.push([{v:t[1],s:{b:1,nb:1}}]);
   rows.push(COLS.map(function(c){return{v:c,s:H}}));
-  R.forEach(function(r,i){rows.push([{v:i+1,s:{nf:"0",al:"c",b:1}},{v:r.no||"",s:{col:RD,b:1,al:"c"}},{v:r.rank||"",s:{al:"c"}},{v:r.name||"",s:{al:"l"}},{v:dmy(r.go),s:{col:RD,al:"c"}},{v:dmy(r.jn),s:{col:RD,al:"c"}},{v:r.cm||"",s:{al:"l"}}])});
-  out.push({name:t[1],rows:rows,widths:[8,16,22,28,18,20,30]})});
+  R.forEach(function(r,i){var line=[{v:i+1,s:{nf:"0",al:"c",b:1}}];
+   K.cols.forEach(function(cn){var d=C[cn],st={al:d.al==="l"?"l":"c"};if(d.red)st.col=RD;if(d.bold)st.b=1;line.push({v:cell(r,cn),s:st})});
+   rows.push(line)});
+  out.push({name:HAS_T?t[1]:K.n,rows:rows,widths:[8].concat(K.cols.map(function(c){return Math.round(C[c].w/6.6)}))})});
  return out};
 ;(function(){
 var enc=new TextEncoder(),CT=null;

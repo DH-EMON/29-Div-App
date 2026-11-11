@@ -123,29 +123,9 @@ function section(id){
   head(s.n,"ট্রুপস / সেকশন","");
   view.className="list";
   view.innerHTML=Object.keys(KINDS).map(function(k){var c=cnt(id,k);
-    return'<a class="row" href="'+(k==="leave"?"tr-sheet.html?s="+id:"#"+id+"-"+k)+'"><div class="ic">'+svg(KINDS[k].i)+'</div><div>'+KINDS[k].n+'<small>'+(c?bn(c)+" জন":"তালিকা খালি")+'</small></div><span class="ar">›</span></a>'}).join("");
+    return'<a class="row" href="tr-sheet.html?s='+id+'&k='+k+'"><div class="ic">'+svg(KINDS[k].i)+'</div><div>'+KINDS[k].n+'<small>'+(c?bn(c)+" জন":"তালিকা খালি")+'</small></div><span class="ar">›</span></a>'}).join("");
 }
-function sheet(id,k){
-  var s=sub(id),kd=KINDS[k];if(!s||!kd){location.hash="";return}
-  if(k==="leave"){location.replace("tr-sheet.html?s="+id);return}
-  head(kd.n,s.n,id);
-  view.className="list";
-  var K=key(id,k),cols=kd.cols;
-  function render(){
-    var rows=load(K),h='<div class="card"><div class="rep"><b>'+kd.h+'</b><span>২৯ ডিভ লোকেটিং ব্যাটারি · '+s.n+'</span><span>তারিখঃ '+new Date().toLocaleDateString("bn-BD")+'</span></div>';
-    h+='<div class="sheet"><table><tr><th>ক্রম</th><th>নাম</th>'+cols.map(function(c){return'<th>'+c+'</th>'}).join("")+'<th class="x"></th></tr>';
-    rows.forEach(function(r,i){h+='<tr><td>'+bn(i+1)+'</td><td>'+esc(r.n)+'</td>'+cols.map(function(c,j){return'<td>'+esc(r.v&&r.v[j]||"")+'</td>'}).join("")+'<td class="x"><button data-d="'+i+'" aria-label="মুছুন">✕</button></td></tr>'});
-    if(rows.length&&kd.num){h+='<tr class="tot"><td></td><td>মোট</td>'+cols.map(function(c,j){var t=0,ok=false;rows.forEach(function(r){var x=parseFloat(r.v&&r.v[j]);if(!isNaN(x)){t+=x;ok=true}});return'<td>'+(ok?bn(Math.round(t*100)/100):"-")+'</td>'}).join("")+'<td class="x"></td></tr>'}
-    h+='</table>'+(rows.length?"":'<div class="empty">কোনো তথ্য নেই</div>')+'</div>';
-    h+='<div class="add"><input id="nm" placeholder="নাম">'+cols.map(function(c){return'<input class="nt" placeholder="'+c+'"'+(kd.num?' inputmode="decimal"':"")+'>'}).join("")+'<button id="ad">যোগ</button></div></div>';
-    view.innerHTML=h;
-    Array.prototype.forEach.call(view.querySelectorAll("[data-d]"),function(b){b.onclick=function(){var r=rows[+b.dataset.d];if(!confirm("“"+r.n+"” মুছে ফেলবেন?"))return;rows.splice(+b.dataset.d,1);save(K,rows);render()}});
-    function add(){var n=$("nm").value.trim(),v=[].map.call(view.querySelectorAll(".nt"),function(e){return e.value.trim()});if(!n){$("nm").focus();return}rows.push({n:n,v:v});save(K,rows);render();$("nm").focus()}
-    $("ad").onclick=add;
-    Array.prototype.forEach.call(view.querySelectorAll(".add input"),function(i){i.onkeydown=function(e){if(e.key==="Enter")add()}});
-  }
-  render();
-}
+function sheet(id,k){location.replace("tr-sheet.html?s="+id+"&k="+k)}
 function route(){
   var h=location.hash.replace("#","");
   if(!h)return home();
