@@ -2,7 +2,7 @@
 <html lang="bn" translate="no" data-theme="light">
 <head>
 <meta charset="utf-8">
-<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script><script src="scan.js?v=1"></script>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>অতিরিক্ত ফ্রেশ এর হিসাব</title>
@@ -415,6 +415,31 @@ var b=document.createElement("button");b.className="s";b.id="xlb";b.textContent=
 var n=document.createElement("div");n.className="note";n.style.marginTop="8px";n.textContent="📊 শীট: এক্সেল ফাইল নামে, যেটা Google Sheets অ্যাপে খুলে সরাসরি এডিট করা যায় (মূল অ্যাপের ডাটা বদলায় না)।";pdfB.parentNode.parentNode.insertBefore(n,pdfB.parentNode.nextSibling);
 b.onclick=function(){try{var bl=xlBuild(window.xlSheets()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=(window.xlName||"sheet")+".xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("শীট বানানো যায়নি: "+e.message)}}}
 initBtn();
+})();
+
+
+/*SCAN-ADAPTER*/
+;(function(){
+if(!window.Scan)return;
+function blank(r){return!r.d&&!r.m&&r.fj==null&&r.fs==null&&r.mj==null&&r.cv==null&&!r.ds&&!r.cu&&r.a==null}
+Scan.init({
+ title:"ছবি থেকে ফ্রেশ হিসাব পূরণ",
+ fields:function(){return[{k:"dt",l:"তারিখ"},{k:"fj",l:"ফ্রেশ জনবল"},{k:"fs",l:"ফ্রেশ সংগ্রহ"},{k:"mj",l:"মেস জনবল"},{k:"cv",l:"সিভিল"},{k:"ds",l:"খরচের বিবরণ",alias:["বিবরণ"]},{k:"a",l:"পরিমাণ"}]},
+ snapshot:function(){return JSON.stringify(S)},
+ restore:function(t){S=JSON.parse(t);save();build()},
+ apply:function(rows){
+  var dd=D(),ok=0,notes=[];
+  rows.forEach(function(rw){
+   var row=blankRow(),any=false;
+   if(rw.dt){var d=Scan.parseDate(rw.dt);if(d){row.d=String(d.d);row.m=String(d.m);any=true}else notes.push("তারিখ পড়া যায়নি: "+rw.dt)}
+   ["fj","fs","mj","cv"].forEach(function(k){if(rw[k]!=null){var v=Scan.parseNum(rw[k]);if(v!=null){row[k]=Math.round(v);any=true}else notes.push("পড়া যায়নি: "+rw[k])}});
+   if(rw.ds){var m=Scan.best(rw.ds,DESC,0.6);if(m)row.ds=DESC[m.i];else{row.ds=CUS;row.cu=String(rw.ds).trim()}any=true}
+   if(rw.a!=null){var v2=Scan.parseNum(rw.a);if(v2!=null){row.a=v2;any=true}else notes.push("পরিমাণ পড়া যায়নি: "+rw.a)}
+   if(!any)return;
+   var bi=-1,i;for(i=0;i<dd.rows.length;i++){if(blank(dd.rows[i])){bi=i;break}}
+   if(bi>=0)dd.rows[bi]=row;else dd.rows.push(row);ok++});
+  save();build();return{ok:ok,unit:"সারি",notes:notes}}
+});
 })();
 
 </script>

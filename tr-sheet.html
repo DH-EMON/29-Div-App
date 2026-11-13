@@ -2,7 +2,7 @@
 <html lang="bn" translate="no">
 <head>
 <meta charset="utf-8">
-<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script><script src="scan.js?v=1"></script>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>নামীয় তালিকা</title>
@@ -341,6 +341,33 @@ window.xlSheets=function(){var out=[],H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A";
    rows.push(line)});
   out.push({name:HAS_T?t[1]:K.n,rows:rows,widths:[8].concat(K.cols.map(function(c){return Math.round(C[c].w/6.6)}))})});
  return out};
+/* ---------- ছবি থেকে পূরণ (স্ক্যান) ---------- */
+(function(){
+if(!window.Scan)return;
+var ALIAS={no:["নম্বর","আর্মি নং","রেজি নং","No","BA No","Number"],rank:["Rank","র‍্যাংক"],name:["Name","নামঃ"],go:["গমন","রওনা","ছুটি শুরু","From"],jn:["যোগদান","ফেরত","To"],cm:["Remarks","মন্তব্য"]};
+Scan.init({
+ title:"ছবি থেকে "+K.n+" তালিকা পূরণ",
+ fields:function(){return K.cols.map(function(c){return{k:c,l:C[c].h,alias:ALIAS[c]||[]}})},
+ opts:[{k:"rep",l:"বর্তমান সারিগুলো মুছে ছবির তালিকা বসান",def:false}],
+ snapshot:function(){return JSON.stringify(S)},
+ restore:function(t){S=JSON.parse(t);save();tySel.value=S.type;build()},
+ apply:function(rows,opt){
+  var R=S.t[S.type].rows,ok=0,notes=[];
+  if(opt.rep)R.length=0;
+  rows.forEach(function(r,idx){
+   var n=nrow();
+   K.cols.forEach(function(c){if(r[c]==null)return;var v=String(r[c]).trim();
+    if(C[c].date){var d=Scan.parseDate(v);
+     if(d){var y=d.y||new Date().getFullYear();n[c]=y+"-"+(d.m<10?"0":"")+d.m+"-"+(d.d<10?"0":"")+d.d;if(!d.y)notes.push("সাল নেই, চলতি সাল ধরা হয়েছে: "+v)}
+     else notes.push("তারিখ পড়া যায়নি: "+v)}
+    else n[c]=v});
+   if(!n.name&&!n.no)return;
+   R.push(n);ok++});
+  if(HAS_T)notes.push(tlab(S.type)+" তালিকায় যোগ হয়েছে।");
+  save();build();return{ok:ok,unit:"সারি",notes:notes}}
+});
+})();
+
 ;(function(){
 var enc=new TextEncoder(),CT=null;
 function crc(b){if(!CT){CT=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CT[n]=c>>>0}}var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}

@@ -2,7 +2,7 @@
 <html lang="bn" translate="no" data-theme="light">
 <head>
 <meta charset="utf-8">
-<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script src="cloud.js?v=1"></script><script src="scan.js?v=1"></script>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>রেশন হিসাব</title>
@@ -369,6 +369,31 @@ var b=document.createElement("button");b.className="s";b.id="xlb";b.textContent=
 var n=document.createElement("div");n.className="note";n.style.marginTop="8px";n.textContent="📊 শীট: এক্সেল ফাইল নামে, যেটা Google Sheets অ্যাপে খুলে সরাসরি এডিট করা যায় (মূল অ্যাপের ডাটা বদলায় না)।";pdfB.parentNode.parentNode.insertBefore(n,pdfB.parentNode.nextSibling);
 b.onclick=function(){try{var bl=xlBuild(window.xlSheets()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=(window.xlName||"sheet")+".xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("শীট বানানো যায়নি: "+e.message)}}}
 initBtn();
+})();
+
+
+/*SCAN-ADAPTER*/
+;(function(){
+if(!window.Scan)return;
+function flat(){var o=[];CFG.secs.forEach(function(sec,a){sec.rows.forEach(function(r,b){if(!r.fn)o.push({a:a,b:b})})});return o}
+Scan.init({
+ title:"ছবি থেকে সারণি পূরণ",
+ fields:function(){var f=[{k:"@l",l:"বিবরণ (সারির নাম)",alias:["আইটেম","নাম","বিষয়","বিবরণ"]}];S.cols.forEach(function(c,i){f.push({k:"c"+i,l:c})});return f},
+ opts:[{k:"pos",l:"সারির নাম না মিললে ক্রম ধরে বসান",def:false}],
+ snapshot:function(){return JSON.stringify(S)},
+ restore:function(t){S=JSON.parse(t);save();build()},
+ apply:function(rows,opt){
+  var fl=flat(),labs=fl.map(function(x){return S.secs[x.a].rows[x.b].l}),used={},ok=0,notes=[],pos=0;
+  rows.forEach(function(r,idx){
+   var tgt=null,hasL=r["@l"]!=null&&String(r["@l"]).trim()!=="";
+   if(hasL){var m=Scan.best(r["@l"],labs,0.6,used);if(m)tgt=m.i;else if(opt.pos){while(pos<fl.length&&used[pos])pos++;if(pos<fl.length)tgt=pos}}
+   else{while(pos<fl.length&&used[pos])pos++;if(pos<fl.length)tgt=pos}
+   if(tgt==null){notes.push("মেলেনি: "+(hasL?r["@l"]:"সারি "+(idx+1)));return}
+   used[tgt]=1;var x=fl[tgt],row=S.secs[x.a].rows[x.b],n=0;
+   Object.keys(r).forEach(function(k){if(k.charAt(0)!=="c")return;var c=+k.slice(1),v=Scan.parseNum(r[k]);if(v!=null&&c>=0&&c<row.v.length){row.v[c]=v;n++}else if(v==null)notes.push("পড়া যায়নি ("+(row.l||"")+"): "+r[k])});
+   ok+=n});
+  save();build();return{ok:ok,unit:"ঘর",notes:notes}}
+});
 })();
 
 </script>
