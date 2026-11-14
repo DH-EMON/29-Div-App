@@ -53,12 +53,25 @@ textarea{height:96px;resize:none}
 .btn{width:100%;margin-top:14px;border:0;border-radius:14px;padding:13px;background:var(--navy);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer;display:none}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;font-size:13px;color:var(--mu);font-weight:600}
 .foot a{color:inherit;text-decoration:none}
+
+/* ---- MOTIVATION টিকার (টিভি নিউজের মতো স্ক্রলিং) ---- */
+.tick{display:flex;align-items:stretch;height:40px;margin:14px -16px 0;background:linear-gradient(#3b4a1f,#2b3615);border-top:1px solid #c9a227;border-bottom:1px solid #c9a227;overflow:hidden;position:relative;direction:ltr}
+.tk-l{position:relative;z-index:2;flex:none;display:flex;align-items:center;gap:7px;background:#c0201a;color:#fff;font-weight:800;font-size:12px;letter-spacing:.09em;padding:0 20px 0 12px;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;clip-path:polygon(0 0,100% 0,calc(100% - 11px) 100%,0 100%);-webkit-clip-path:polygon(0 0,100% 0,calc(100% - 11px) 100%,0 100%);box-shadow:2px 0 6px rgba(0,0,0,.35)}
+.tk-l i{width:7px;height:7px;border-radius:50%;background:#fff;animation:tkb 1.2s ease-in-out infinite}
+@keyframes tkb{50%{opacity:.25}}
+.tk-v{flex:1;min-width:0;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+.tk-t{display:inline-flex;align-items:center;height:100%;white-space:nowrap;will-change:transform;transform:translate3d(0,0,0)}
+
+.tk-s{color:#fff;font-weight:700;font-size:clamp(14px,3.9vw,16.5px);line-height:1;letter-spacing:.01em;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+.tk-sep{flex:none;width:8px;height:8px;margin:0 clamp(14px,5vw,22px);background:#d4af37;transform:rotate(45deg);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+@media (max-width:360px){.tk-l{font-size:11px;padding:0 16px 0 9px}.tick{height:38px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
  <div class="top"><img src="icon-192.png" alt=""><h1>29 Div locating<br>Battery Artillery<small>PIONEER LOCATOR</small></h1><button class="ib" id="th" aria-label="থিম"></button></div>
+ <div class="tick" id="tick" role="marquee" aria-label="প্রেরণামূলক স্লোগান"><span class="tk-l"><i></i>MOTIVATION</span><div class="tk-v"><div class="tk-t" id="tkt"></div></div></div>
  <div class="pills"><span class="pill"><i class="dot" id="od"></i><span id="ot">অনলাইন</span></span><span class="pill" id="bt" style="display:none"></span></div>
 </header>
 
@@ -127,6 +140,36 @@ dd.onchange=dc;dc();
 var dp;addEventListener("beforeinstallprompt",function(e){e.preventDefault();dp=e;$("ins").style.display="block"});
 $("ins").onclick=function(){if(dp){dp.prompt();dp=null;$("ins").style.display="none"}};
 if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+<script>
+/* MOTIVATION টিকার: স্লোগান একটির পর একটি নিজে নিজে চলতে থাকে */
+(function(){
+var S=["ঘাম রক্ত বাঁচায়।","সমরে আমরা, শান্তিতে আমরা, সর্বত্র আমরা দেশের তরে।","শৃঙ্খলাই সৈনিকের শক্তি।","প্রশিক্ষণের ঘাম, যুদ্ধের রক্ত বাঁচায়।","সম্মান ও গৌরব — আমাদের অহংকার।"];
+var t=document.getElementById("tkt");if(!t)return;var v=t.parentNode;
+var slow=false;try{slow=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)}catch(e){}
+var SPEED=slow?32:56,half=1,x=0,last=0,paused=false;
+function unit(){var h="";for(var i=0;i<S.length;i++)h+='<span class="tk-s">'+S[i]+'</span><span class="tk-sep" aria-hidden="true"></span>';return h}
+function build(){
+ t.innerHTML=unit();
+ var w=t.scrollWidth||1,vw=v.clientWidth||320,n=Math.max(1,Math.ceil(vw/w)),one="";
+ for(var i=0;i<n;i++)one+=unit();
+ t.innerHTML=one+one;
+ half=(t.scrollWidth||2)/2;if(x>=half)x=x%half;
+}
+function frame(ts){
+ if(!last)last=ts;var dt=Math.min(64,ts-last);last=ts;
+ if(!paused){x+=SPEED*dt/1000;if(x>=half)x-=half;t.style.webkitTransform=t.style.transform="translate3d("+(-x).toFixed(2)+"px,0,0)"}
+ requestAnimationFrame(frame)}
+build();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(build);
+var rt=0;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(build,200)});
+document.addEventListener("visibilitychange",function(){last=0});
+var tk=document.getElementById("tick");
+function pz(on){return function(){paused=on}}
+tk.addEventListener("touchstart",pz(true),{passive:true});tk.addEventListener("touchend",pz(false));tk.addEventListener("touchcancel",pz(false));
+tk.addEventListener("mousedown",pz(true));tk.addEventListener("mouseup",pz(false));tk.addEventListener("mouseleave",pz(false));
+requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
