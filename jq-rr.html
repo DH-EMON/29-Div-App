@@ -223,78 +223,6 @@ window.recFresh=function(){return fresh()};
 window.recNew=function(){var o=fresh();o.y=S.y;o.cols=S.cols.slice();o.secs=S.secs.map(function(sc){return{rows:sc.rows.map(function(r){return{l:r.l,v:S.cols.map(function(){return 0})}})}});return o};
 window.recName=function(){return ttlTxt()};
 window.recReload=function(){syncDate();build();document.querySelectorAll("#sig input").forEach(function(i){i.value=S.sig[i.dataset.k]||""})};
-;(function(){
-var RK=KEY+"-rec",BK=RK+"-blank";
-var st=document.createElement("style");st.textContent=
-"#recbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:4px 0 8px}"+
-"#recbar b{flex:1;min-width:120px;font-size:13px;color:var(--tx)}"+
-"#recbar button,#recm button.rb{font:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:8px 10px;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx)}"+
-"#recbar button.pm{background:var(--ac);color:#fff;border-color:var(--ac)}"+
-"#recm{position:fixed;top:0;left:0;right:0;bottom:0;z-index:80;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center}"+
-"#recm.on{display:flex}"+
-"#recm .bx{background:var(--card);color:var(--tx);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:16px 16px 0 0;padding:14px 14px calc(18px + env(safe-area-inset-bottom,0px))}"+
-"#recm h3{margin:0 0 8px;font-size:17px}"+
-"#recm .it{display:flex;align-items:center;gap:6px;border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:6px 0}"+
-"#recm .it div{flex:1;min-width:0}"+
-"#recm .it b{display:block;font-size:15px;overflow-wrap:anywhere}"+
-"#recm .it small{color:var(--mu);font-size:11px}"+
-"#recm button.dl2{color:var(--bad)}"+
-"#recm .row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}"+
-"#rect{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#222;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;z-index:90;display:none}";
-document.head.appendChild(st);
-function rl(){try{return JSON.parse(localStorage.getItem(RK))||[]}catch(x){return[]}}
-function rs(a){try{localStorage.setItem(RK,JSON.stringify(a));return true}catch(x){alert("সেভ করা যায়নি, ফোনের জায়গা ভরে গেছে।");return false}}
-function norm(o){var c=JSON.parse(JSON.stringify(o));delete c.recName;return JSON.stringify(c)}
-function isSaved(){var n=norm(S);return rl().some(function(r){return norm(r.data)===n})}
-function isBlank(){var n=norm(S),f=null,b=null;try{f=norm(window.recFresh())}catch(e){}try{b=localStorage.getItem(BK)}catch(e){}return n===f||n===b}
-function dirty(){return !isSaved()&&!isBlank()}
-var bar=document.createElement("div");bar.id="recbar";
-bar.innerHTML='<b id="recn"></b><button class="pm" id="recsv">💾 রেকর্ড সেভ</button><button id="recop">📂 রেকর্ড খুলুন</button>';
-var back=document.querySelector(".back");if(back&&back.parentNode)back.parentNode.insertBefore(bar,back.nextSibling);else document.body.insertBefore(bar,document.body.firstChild);
-var tb=document.createElement("div");tb.id="rect";document.body.appendChild(tb);
-var modal=document.createElement("div");modal.id="recm";
-modal.innerHTML='<div class="bx"><h3>সেভ করা রেকর্ড</h3><div id="recl"></div><div class="row"><button class="rb" id="recnew">+ নতুন ফাঁকা হিসাব শুরু</button></div><div class="row"><button class="rb" id="recex">⬇ ব্যাকআপ ফাইল</button><button class="rb" id="recim">⬆ ফাইল থেকে আনুন</button></div><div class="row"><button class="rb" id="reccl" style="margin-left:auto">বন্ধ করুন</button></div><input type="file" id="recfile" accept=".json,application/json" style="display:none"></div>';
-document.body.appendChild(modal);
-function toast(m){tb.textContent=m;tb.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){tb.style.display="none"},2200)}
-function lab(){document.getElementById("recn").textContent="রেকর্ড: "+(S.recName||"সেভ করা হয়নি")}
-function dstr(ts){var d=new Date(ts);return toBn(d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear())}
-function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
-function render(){var a=rl().slice().sort(function(x,y){return y.ts-x.ts}),h="";
-if(!a.length)h='<div style="color:var(--mu);font-size:14px;padding:10px 0">এখনও কোনো রেকর্ড সেভ করা নেই।</div>';
-a.forEach(function(r){h+='<div class="it"><div><b>'+esc(r.name)+'</b><small>সেভ: '+dstr(r.ts)+(S.recName===r.name?" · এখন খোলা":"")+'</small></div><button class="rb" data-o="'+r.id+'">খুলুন</button><button class="rb dl2" data-x="'+r.id+'">মুছুন</button></div>'});
-document.getElementById("recl").innerHTML=h;
-document.querySelectorAll("#recl button[data-o]").forEach(function(b){b.onclick=function(){openRec(this.dataset.o)}});
-document.querySelectorAll("#recl button[data-x]").forEach(function(b){b.onclick=function(){delRec(this.dataset.x)}})}
-function closeM(){modal.className=""}
-function doSave(){var def=S.recName||window.recName();var nm=prompt("রেকর্ডের নাম লিখুন (যেমন: জানুয়ারি ২০২৬)",def);if(nm===null)return;nm=nm.trim();if(!nm)return;
-var a=rl(),ix=-1;a.forEach(function(r,i){if(r.name===nm)ix=i});
-if(ix>=0&&nm!==S.recName&&!confirm("\""+nm+"\" নামে রেকর্ড আগেই আছে। এটা বদলে দেবেন?"))return;
-S.recName=nm;var rec={id:ix>=0?a[ix].id:String(Date.now()),name:nm,ts:Date.now(),data:JSON.parse(JSON.stringify(S))};
-if(ix>=0)a[ix]=rec;else a.push(rec);
-if(!rs(a)){return}save();lab();toast("সেভ হয়েছে: "+nm)}
-function openRec(id){var r=rl().filter(function(x){return x.id===id})[0];if(!r)return;
-if(dirty()&&!confirm("এখনকার হিসাব সেভ করা নেই। সেভ না করেই এই রেকর্ড খুলবেন? (না করতে চাইলে বাতিল দিয়ে আগে সেভ করুন)"))return;
-S=JSON.parse(JSON.stringify(r.data));S.recName=r.name;save();window.recReload();lab();closeM();toast("খোলা হয়েছে: "+r.name)}
-function delRec(id){var a=rl(),r=a.filter(function(x){return x.id===id})[0];if(!r)return;
-if(!confirm("\""+r.name+"\" রেকর্ডটা মুছবেন? আর ফেরানো যাবে না।"))return;
-rs(a.filter(function(x){return x.id!==id}));if(S.recName===r.name){delete S.recName;save();lab()}render()}
-function newRec(){if(dirty()&&!confirm("এখনকার হিসাব সেভ করা নেই। সেভ না করেই নতুন ফাঁকা হিসাব শুরু করবেন?"))return;
-S=window.recNew();delete S.recName;try{localStorage.setItem(BK,norm(S))}catch(e){}save();window.recReload();lab();closeM();toast("নতুন হিসাব শুরু")}
-function exp(){var o={app:KEY,ts:Date.now(),current:S,records:rl()},bl=new Blob([JSON.stringify(o)],{type:"application/json"}),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download="backup-"+KEY+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}
-function imp(file){var fr=new FileReader();fr.onload=function(){try{var o=JSON.parse(fr.result);if(!o||o.app!==KEY||!Array.isArray(o.records)){alert("এটা এই পেজের ব্যাকআপ ফাইল না।");return}
-var a=rl(),n=0;o.records.forEach(function(r){if(!r||!r.name||!r.data)return;var ix=-1;a.forEach(function(x,i){if(x.name===r.name)ix=i});if(ix>=0)a[ix]=r;else a.push(r);n++});
-if(rs(a)){render();toast(toBn(n)+"টা রেকর্ড আনা হয়েছে")}}catch(e){alert("ফাইলটা পড়া যায়নি।")}};fr.readAsText(file)}
-document.getElementById("recsv").onclick=doSave;
-document.getElementById("recop").onclick=function(){render();modal.className="on"};
-document.getElementById("reccl").onclick=closeM;
-document.getElementById("recnew").onclick=newRec;
-document.getElementById("recex").onclick=exp;
-document.getElementById("recim").onclick=function(){document.getElementById("recfile").click()};
-document.getElementById("recfile").onchange=function(){if(this.files&&this.files[0])imp(this.files[0]);this.value=""};
-modal.onclick=function(e){if(e.target===modal)closeM()};
-lab();
-})();
-
 window.xlName="jq-"+CFG.key;
 window.xlSheets=function(){var H={b:1,fill:"FFFFFF",al:"c"},RD="C0201A",FL="FFFFFF",rows=[],map={},off=CFG.numcol?1:0,n=S.cols.length;
 rows.push([{v:ttlTxt(),s:{b:1,nb:1}}]);
@@ -316,64 +244,6 @@ rows.push(row)})});
 if(CFG.sig){rows.push([]);CFG.sig.forEach(function(p){rows.push([{v:p[1],s:{b:1,nb:1}},{v:S.sig[p[0]]||"",s:{nb:1}}])})}
 var w=(off?[7]:[]).concat([30]).concat(S.cols.map(function(){return 12}));
 return[{name:ttlTxt().slice(0,28),rows:rows,widths:w}]};
-
-;(function(){
-var enc=new TextEncoder(),CT=null;
-function crc(b){if(!CT){CT=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CT[n]=c>>>0}}var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
-function zip(files){var parts=[],cen=[],off=0;
-files.forEach(function(f){var nm=enc.encode(f.name),d=f.data,c=crc(d),lh=new DataView(new ArrayBuffer(30));
-lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(10,0,true);lh.setUint16(12,0x21,true);lh.setUint32(14,c,true);lh.setUint32(18,d.length,true);lh.setUint32(22,d.length,true);lh.setUint16(26,nm.length,true);
-parts.push(new Uint8Array(lh.buffer),nm,d);
-var ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(14,0x21,true);ch.setUint32(16,c,true);ch.setUint32(20,d.length,true);ch.setUint32(24,d.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,off,true);
-cen.push(new Uint8Array(ch.buffer),nm);off+=30+nm.length+d.length});
-var cs=0;cen.forEach(function(p){cs+=p.length});
-var ed=new DataView(new ArrayBuffer(22));ed.setUint32(0,0x06054b50,true);ed.setUint16(8,files.length,true);ed.setUint16(10,files.length,true);ed.setUint32(12,cs,true);ed.setUint32(16,off,true);
-return new Blob(parts.concat(cen,[new Uint8Array(ed.buffer)]),{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})}
-function colL(n){var s="";n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s}
-function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-window.xlCol=colL;
-window.xlBuild=function(sheets){
-var fonts=['<font><sz val="11"/><name val="Arial"/></font>'],fills=['<fill><patternFill patternType="none"/></fill>','<fill><patternFill patternType="gray125"/></fill>'],xfs=['<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'],keys={},fk={},flk={};
-function fontId(b,col){var k=(b?1:0)+"|"+(col||"");if(fk[k]!=null)return fk[k];fonts.push('<font>'+(b?'<b/>':'')+'<sz val="11"/>'+(col?'<color rgb="FF'+col+'"/>':'')+'<name val="Arial"/></font>');return fk[k]=fonts.length-1}
-function fillId(c){if(!c)return 0;if(flk[c]!=null)return flk[c];fills.push('<fill><patternFill patternType="solid"><fgColor rgb="FF'+c+'"/><bgColor indexed="64"/></patternFill></fill>');return flk[c]=fills.length-1}
-function sid(s){if(!s)return 0;var k=JSON.stringify([s.b,s.fill,s.col,s.nf,s.al,s.nb]);if(keys[k]!=null)return keys[k];
-var nf=s.nf==="3"?164:s.nf==="5"?165:s.nf==="0"?1:0,al=s.al?'<alignment horizontal="'+(s.al==="c"?"center":"left")+'" vertical="center" wrapText="1"/>':'';
-xfs.push('<xf numFmtId="'+nf+'" fontId="'+fontId(s.b,s.col)+'" fillId="'+fillId(s.fill)+'" borderId="'+(s.nb?0:1)+'" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"'+(al?' applyAlignment="1">'+al+'</xf>':'/>'));
-return keys[k]=xfs.length-1}
-var shx=[];
-sheets.forEach(function(sh){var rows=sh.rows,x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
-if(sh.widths){x+='<cols>';sh.widths.forEach(function(w,i){x+='<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>'});x+='</cols>'}
-x+='<sheetData>';
-rows.forEach(function(r,ri){x+='<row r="'+(ri+1)+'">';r.forEach(function(c,ci){if(c==null)return;var o=(typeof c==="object")?c:{v:c},ref=colL(ci)+(ri+1),s=sid(o.s||(typeof c==="object"?null:{}));
-if(o.f){x+='<c r="'+ref+'" s="'+s+'"'+(typeof o.v==="string"?' t="str"':'')+'><f>'+esc(o.f)+'</f>'+(o.v!=null?'<v>'+esc(o.v)+'</v>':'')+'</c>'}
-else if(typeof o.v==="number"){x+='<c r="'+ref+'" s="'+s+'"><v>'+o.v+'</v></c>'}
-else if(o.v==null||o.v===""){x+='<c r="'+ref+'" s="'+s+'"/>'}
-else{x+='<c r="'+ref+'" s="'+s+'" t="inlineStr"><is><t xml:space="preserve">'+esc(o.v)+'</t></is></c>'}});x+='</row>'});
-x+='</sheetData>';
-if(sh.merges&&sh.merges.length){x+='<mergeCells count="'+sh.merges.length+'">';sh.merges.forEach(function(m){x+='<mergeCell ref="'+m+'"/>'});x+='</mergeCells>'}
-x+='</worksheet>';shx.push(x)});
-var styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.000"/><numFmt numFmtId="165" formatCode="0.00000"/></numFmts><fonts count="'+fonts.length+'">'+fonts.join('')+'</fonts><fills count="'+fills.length+'">'+fills.join('')+'</fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FF777777"/></left><right style="thin"><color rgb="FF777777"/></right><top style="thin"><color rgb="FF777777"/></top><bottom style="thin"><color rgb="FF777777"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="'+xfs.length+'">'+xfs.join('')+'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
-var names=[],used={};
-sheets.forEach(function(sh,i){var n=String(sh.name||("Sheet"+(i+1))).replace(/[\[\]:*?\/\\]/g," ").slice(0,31);while(used[n])n=n.slice(0,28)+"_"+i;used[n]=1;names.push(n)});
-var ct='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>';
-sheets.forEach(function(s,i){ct+='<Override PartName="/xl/worksheets/sheet'+(i+1)+'.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'});ct+='</Types>';
-var wb='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>';
-names.forEach(function(n,i){wb+='<sheet name="'+esc(n)+'" sheetId="'+(i+1)+'" r:id="rId'+(i+1)+'"/>'});wb+='</sheets></workbook>';
-var wr='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">';
-sheets.forEach(function(s,i){wr+='<Relationship Id="rId'+(i+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet'+(i+1)+'.xml"/>'});
-wr+='<Relationship Id="rId'+(sheets.length+1)+'" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
-var rr='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
-var files=[{name:"[Content_Types].xml",data:enc.encode(ct)},{name:"_rels/.rels",data:enc.encode(rr)},{name:"xl/workbook.xml",data:enc.encode(wb)},{name:"xl/_rels/workbook.xml.rels",data:enc.encode(wr)},{name:"xl/styles.xml",data:enc.encode(styles)}];
-shx.forEach(function(x,i){files.push({name:"xl/worksheets/sheet"+(i+1)+".xml",data:enc.encode(x)})});
-return zip(files)};
-function initBtn(){var pdfB=document.getElementById("pdf");if(!pdfB||!window.xlSheets)return;
-var b=document.createElement("button");b.className="s";b.id="xlb";b.textContent="📊 শীট";pdfB.parentNode.insertBefore(b,pdfB.nextSibling);
-var n=document.createElement("div");n.className="note";n.style.marginTop="8px";n.textContent="📊 শীট: এক্সেল ফাইল নামে, যেটা Google Sheets অ্যাপে খুলে সরাসরি এডিট করা যায় (মূল অ্যাপের ডাটা বদলায় না)।";pdfB.parentNode.parentNode.insertBefore(n,pdfB.parentNode.nextSibling);
-b.onclick=function(){try{var bl=xlBuild(window.xlSheets()),u=URL.createObjectURL(bl),a=document.createElement("a");a.href=u;a.download=(window.xlName||"sheet")+".xlsx";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}catch(e){alert("শীট বানানো যায়নি: "+e.message)}}}
-initBtn();
-})();
-
-
 /*SCAN-ADAPTER*/
 ;(function(){
 if(!window.Scan)return;
@@ -399,5 +269,7 @@ Scan.init({
 })();
 
 </script>
+<script src="lib-records.js?v=1"></script>
+<script src="lib-xlsx.js?v=1"></script>
 </body>
 </html>
